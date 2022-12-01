@@ -1,6 +1,6 @@
 package com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods
 
-    import androidx.compose.runtime.State
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,5 +42,15 @@ class MethodsViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun onEvent(event: MethodsEvent) {
+        when (event) {
+            is MethodsEvent.ItemSelected -> {
+                viewModelScope.launch {
+                    recipesUseCase.saveDefaultMethodUseCase(event.method.id)
+                }
+            }
+        }
     }
 }

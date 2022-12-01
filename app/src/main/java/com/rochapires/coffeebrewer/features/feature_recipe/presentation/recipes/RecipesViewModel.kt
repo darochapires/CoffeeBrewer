@@ -33,8 +33,17 @@ class RecipesViewModel @Inject constructor(
     //private var getRecipesJob: Job? = null
 
     init {
-        savedStateHandle.get<Int>(Constants.METHOD_ID)?.let { methodId ->
-            getRecipes(methodId, RecipeOrder.Date(OrderType.Descending))
+        var methodId = savedStateHandle.get<String>(Constants.METHOD_ID)
+        if(methodId == null) {
+            viewModelScope.launch {
+                methodId = recipesUseCase.getDefaultMethodUseCase()
+            }
+        }
+        //savedStateHandle.get<Int>(Constants.METHOD_ID)?.let { methodId ->
+        //    getRecipes(methodId, RecipeOrder.Date(OrderType.Descending))
+        //}
+        methodId?.let {
+            getRecipes(it, RecipeOrder.Date(OrderType.Descending))
         }
     }
 
@@ -81,7 +90,7 @@ class RecipesViewModel @Inject constructor(
 //            .launchIn(viewModelScope)
 //    }
 
-    private fun getRecipes(methodId: Int, recipeOrder: RecipeOrder) {
+    private fun getRecipes(methodId: String, recipeOrder: RecipeOrder) {
         recipesUseCase.getRecipesByMethodIdUseCase(methodId).onEach { recipes ->
             when (recipes) {
                 is Resource.Success -> {

@@ -15,6 +15,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.rochapires.coffeebrewer.features.feature_onboarding.data.OnboardingData
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.components.PagerIndicator
+import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.MethodsScreen
+import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipes.RecipesScreen
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -41,13 +43,14 @@ fun PagerScreen(navController: NavController) {
             }
             HorizontalPager(count = 4, state = pagerState) { page ->
                 when (page) {
-                    0, 2, 3 -> {
-                        HelloLandingScreen(
-                        )
+                    0, 2 -> {
+                        HelloLandingScreen()
                     }
                     1 -> {
-                        MethodLandingScreen(
-                        )
+                        MethodsScreen()
+                    }
+                    3 -> {
+                        RecipesScreen()
                     }
                 }
             }

@@ -11,11 +11,11 @@ interface CoffeeApi {
     suspend fun getMethods(): List<Method>
 
     @GET("/methods/{id}.json")
-    suspend fun getMethodById(@Path("id")id: Int): Method?
+    suspend fun getMethodById(@Path("id")id: String): Method?
 
     @GET("/recipes/{methodId}.json")
-    suspend fun getRecipesByMethodId(@Path("methodId")methodId: Int): List<Recipe>
+    suspend fun getRecipesByMethodId(@Path("methodId")methodId: String): List<Recipe>
 
     @GET("/recipes/{id}.json")
-    suspend fun getRecipeById(@Path("id")id: Int): Recipe?
+    suspend fun getRecipeById(@Path("id")id: String): Recipe?
 }

@@ -1,13 +1,20 @@
 package com.rochapires.coffeebrewer.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.rochapires.coffeebrewer.features.common.Constants
-import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.*
 import com.rochapires.coffeebrewer.features.feature_recipe.data.remote.CoffeeApi
 import com.rochapires.coffeebrewer.features.feature_recipe.data.repository.RecipeRepositoryImpl
+import com.rochapires.coffeebrewer.features.feature_recipe.data.repository.UserPreferencesRepositoryImpl
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.RecipeRepository
+import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.UserPreferencesRepository
+import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -48,26 +55,28 @@ object AppModule {
     fun provideRecipeRepository(api: CoffeeApi): RecipeRepository {
         return RecipeRepositoryImpl(api)
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideMethodUseCase(repository: MethodRepository): MethodUseCases {
-//        return MethodUseCases(
-//            getMethodsUseCase = GetMethodsUseCase(repository),
-//            getMethodUseCase = GetMethodUseCase(repository)
-//        )
-//    }
+    @Provides
+    @Singleton
+    fun provideUserPreferencesRepository(@ApplicationContext app: Context): UserPreferencesRepository {
+        return UserPreferencesRepositoryImpl(app)
+    }
 
     @Provides
     @Singleton
-    fun provideRecipeUseCase(repository: RecipeRepository): RecipeUseCases {
+    fun provideRecipeUseCase(recipeRepository: RecipeRepository, userPreferencesRepository: UserPreferencesRepository): RecipeUseCases {
         return RecipeUseCases(
-            getMethodsUseCase = GetMethodsUseCase(repository),
-            getMethodUseCase = GetMethodUseCase(repository),
-            getRecipesByMethodIdUseCase = GetRecipesByMethodIdUseCase(repository),
-            getRecipeUseCase = GetRecipeUseCase(repository),
-            addRecipeUseCase = AddRecipeUseCase(repository),
-            deleteRecipeUseCase = DeleteRecipeUseCase(repository)
+            getMethodsUseCase = GetMethodsUseCase(recipeRepository),
+            getMethodUseCase = GetMethodUseCase(recipeRepository),
+            getRecipesByMethodIdUseCase = GetRecipesByMethodIdUseCase(recipeRepository),
+            getRecipeUseCase = GetRecipeUseCase(recipeRepository),
+            addRecipeUseCase = AddRecipeUseCase(recipeRepository),
+            deleteRecipeUseCase = DeleteRecipeUseCase(recipeRepository),
+            saveDefaultMethodUseCase = SaveDefaultMethodUseCase(userPreferencesRepository),
+            getDefaultMethodUseCase = GetDefaultMethodUseCase(userPreferencesRepository),
+            saveDefaultRecipeUseCase = SaveDefaultRecipeUseCase(userPreferencesRepository),
+            getDefaultRecipeUseCase = GetDefaultRecipeUseCase(userPreferencesRepository),
+            saveDefaultCoffeeQuantityUseCase = SaveDefaultCoffeeQuantityUseCase(userPreferencesRepository),
+            getDefaultCoffeeQuantityUseCase = GetDefaultCoffeeQuantityUseCase(userPreferencesRepository)
         )
     }
 }

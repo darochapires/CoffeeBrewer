@@ -8,7 +8,7 @@ interface RecipeRepository {
     suspend fun deleteRecipe(recipe: Recipe)
 
     suspend fun getMethods(): List<Method>
-    suspend fun getMethodById(id: Int): Method?
-    suspend fun getRecipesByMethodId(id: Int): List<Recipe>
-    suspend fun getRecipeById(id: Int): Recipe?
+    suspend fun getMethodById(id: String): Method?
+    suspend fun getRecipesByMethodId(id: String): List<Recipe>
+    suspend fun getRecipeById(id: String): Recipe?
 }

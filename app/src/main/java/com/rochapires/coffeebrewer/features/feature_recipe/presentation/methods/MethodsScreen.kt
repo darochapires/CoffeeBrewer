@@ -15,13 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.components.MethodItem
 
 @Composable
 fun MethodsScreen(
     //navController: NavController,
-    viewModel: MethodsViewModel = hiltViewModel()
+    viewModel: MethodsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.value
     
@@ -31,7 +30,7 @@ fun MethodsScreen(
                 MethodItem(
                     method = method,
                     onItemClick = {
-                        //navController.navigate()
+                        viewModel.onEvent(MethodsEvent.ItemSelected(method))
                     }
                 )
             }

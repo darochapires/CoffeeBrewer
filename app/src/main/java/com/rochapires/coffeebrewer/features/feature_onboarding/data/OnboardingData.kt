@@ -10,5 +10,4 @@ object OnboardingData {
         OnboardingItem("What is your favourite brewing recipe?"),
         OnboardingItem("How much coffee do you use? (Ex: 15gr for 200ml of coffee)"),
     )
-
 }

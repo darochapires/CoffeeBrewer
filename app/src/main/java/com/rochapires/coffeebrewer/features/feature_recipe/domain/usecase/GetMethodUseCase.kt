@@ -7,7 +7,7 @@ class GetMethodUseCase(
     private val repository: RecipeRepository
 ) {
 
-    suspend operator fun invoke(id: Int): Method? {
+    suspend operator fun invoke(id: String): Method? {
         return repository.getMethodById(id)
     }
 }
