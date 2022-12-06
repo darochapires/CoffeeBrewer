@@ -1,10 +1,12 @@
 using CoffeeBrewer.Services.Methods;
+using CoffeeBrewer.Services.Recipes;
 using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddControllers();
     builder.Services.AddScoped<IMethodService, MethodService>();
+    builder.Services.AddScoped<IRecipeService, RecipeService>();
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
         options.ForwardedHeaders =

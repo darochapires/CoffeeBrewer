@@ -18,9 +18,9 @@ public class RecipesController : ApiController
     }
 
     [HttpPost]
-    public IActionResult CreateRecipe([FromQuery] Guid methodId, CreateRecipeRequest request)
+    public IActionResult CreateRecipe(CreateRecipeRequest request)
     {
-        var getMethodResult = _methodService.GetMethod(methodId);
+        var getMethodResult = _methodService.GetMethod(request.MethodId);
         if(getMethodResult.IsError) 
         {
             //TODO: add to errors
