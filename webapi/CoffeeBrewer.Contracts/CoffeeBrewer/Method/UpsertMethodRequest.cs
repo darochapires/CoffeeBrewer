@@ -1,4 +1,4 @@
-namespace CoffeeBrewer.Contracts.CoffeeBrewer;
+namespace CoffeeBrewer.Contracts.CoffeeBrewer.Method;
 
 public record UpsertMethodRequest(
     string Name,

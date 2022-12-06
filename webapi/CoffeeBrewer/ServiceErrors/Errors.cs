@@ -20,6 +20,24 @@ public static class Errors
             code: "Method.InavalidDescription",
             description: $"Method description must have between {Models.Method.MinDescriptionLenght} and  {Models.Method.MaxDescriptionLenght} characters."
         );
+    }
+    
+    public static class Recipe
+    {
+        public static Error NotFound => Error.NotFound(
+            code: "Recipe.NotFound",
+            description: "Recipe was not found"
+        );
+
+        public static Error InavalidName => Error.Validation(
+            code: "Recipe.InvalidName",
+            description: $"Recipe name must have between {Models.Recipe.MinNameLenght} and  {Models.Recipe.MaxNameLenght} characters."
+        );
+
+        public static Error InavalidDescription => Error.Validation(
+            code: "Recipe.InavalidDescription",
+            description: $"Recipe description must have between {Models.Recipe.MinDescriptionLenght} and  {Models.Recipe.MaxDescriptionLenght} characters."
+        );
 
     }
 }

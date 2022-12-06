@@ -1,31 +1,32 @@
-using CoffeeBrewer.Contracts.CoffeeBrewer.Method;
+using CoffeeBrewer.Contracts.CoffeeBrewer.Recipe;
 using CoffeeBrewer.ServiceErrors;
 using ErrorOr;
 
 namespace CoffeeBrewer.Models;
 
-public class Method
+public class Recipe
 {
     public const int MinNameLenght = 3;
     public const int MaxNameLenght = 50;
     public const int MinDescriptionLenght = 10;
     public const int MaxDescriptionLenght = 5000;
-
+    
     public Guid Id { get; }
     public string Name { get; }
     public string Description { get; }
     public DateTime LastModifiedDateTime { get; }
-    public ICollection<Recipe>? Recipes { get; }
+    public Method Method { get; }
 
-    private Method(Guid id, string name, string descriptioni, DateTime lastModifiedDateTime) 
+    private Recipe(Guid id, string name, string descriptioni, DateTime lastModifiedDateTime, Method method) 
     {
         Id = id;
         Name = name;
         Description = descriptioni;
         LastModifiedDateTime = lastModifiedDateTime;
+        Method = method;
     }
 
-    public static ErrorOr<Method> Create(string name, string description, Guid? id = null) 
+    public static ErrorOr<Recipe> Create(string name, string description, Method method, Guid? id = null)
     {
         List<Error> errors = new();
         if(name.Length is < MinNameLenght or > MaxNameLenght) 
@@ -40,16 +41,16 @@ public class Method
         {
             return errors;
         }
-        return new Method(id ?? Guid.NewGuid(), name, description, DateTime.UtcNow);
+        return new Recipe(id ?? Guid.NewGuid(), name, description, DateTime.UtcNow, method);
     }
 
-    internal static ErrorOr<Method> From(CreateMethodRequest request)
+    internal static ErrorOr<Recipe> From(CreateRecipeRequest request, Method method)
     {
-        return Create(request.Name, request.Description);
+        return Create(request.Name, request.Description, method);
     }
 
-    internal static ErrorOr<Method> From(Guid id, UpsertMethodRequest request)
+    internal static ErrorOr<Recipe> From(Guid id, UpsertRecipeRequest request, Method method)
     {
-        return Create(request.Name, request.Description, id);
+        return Create(request.Name, request.Description, method, id);
     }
 }

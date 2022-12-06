@@ -1,4 +1,4 @@
-using CoffeeBrewer.Contracts.CoffeeBrewer;
+using CoffeeBrewer.Contracts.CoffeeBrewer.Method;
 using CoffeeBrewer.Models;
 using CoffeeBrewer.Services.Methods;
 using Microsoft.AspNetCore.Mvc;
