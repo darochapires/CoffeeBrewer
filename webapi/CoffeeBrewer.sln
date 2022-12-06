@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeBrewer.Contracts", "CoffeeBrewer.Contracts\CoffeeBrewer.Contracts.csproj", "{6A28EC81-314A-4083-9241-DA607BEC84BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeBrewer", "CoffeeBrewer\CoffeeBrewer.csproj", "{EB842673-53C9-4830-88F4-96EA04DBFA40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A28EC81-314A-4083-9241-DA607BEC84BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A28EC81-314A-4083-9241-DA607BEC84BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A28EC81-314A-4083-9241-DA607BEC84BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A28EC81-314A-4083-9241-DA607BEC84BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB842673-53C9-4830-88F4-96EA04DBFA40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB842673-53C9-4830-88F4-96EA04DBFA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB842673-53C9-4830-88F4-96EA04DBFA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB842673-53C9-4830-88F4-96EA04DBFA40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

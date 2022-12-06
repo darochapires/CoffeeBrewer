@@ -1,0 +1,3 @@
+@id=36a7ac0e-245c-4e77-863c-5f8f83201405
+
+GET  http://localhost:5002/methods/{{id}}

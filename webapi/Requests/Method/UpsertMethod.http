@@ -1,0 +1,9 @@
+@id=36a7ac0e-245c-4e77-863c-5f8f83201405
+
+PUT  http://localhost:5002/methods/{{id}}
+Content-Type: application/json
+
+{
+    "name": "Origrami",
+    "description": "Origrami description"
+}
