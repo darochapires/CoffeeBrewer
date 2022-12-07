@@ -17,11 +17,11 @@ public class Method
     public DateTime LastModifiedDateTime { get; }
     public ICollection<Recipe>? Recipes { get; }
 
-    private Method(Guid id, string name, string descriptioni, DateTime lastModifiedDateTime) 
+    private Method(Guid id, string name, string description, DateTime lastModifiedDateTime) 
     {
         Id = id;
         Name = name;
-        Description = descriptioni;
+        Description = description;
         LastModifiedDateTime = lastModifiedDateTime;
     }
 

@@ -1,5 +1,6 @@
 using CoffeeBrewer.Services.Methods;
 using CoffeeBrewer.Services.Recipes;
+using CoffeeBrewer.Services.Steps;
 using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers();
     builder.Services.AddScoped<IMethodService, MethodService>();
     builder.Services.AddScoped<IRecipeService, RecipeService>();
+    builder.Services.AddScoped<IStepService, StepService>();
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
         options.ForwardedHeaders =

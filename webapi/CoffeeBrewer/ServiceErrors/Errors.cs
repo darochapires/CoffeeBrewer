@@ -40,4 +40,23 @@ public static class Errors
         );
 
     }
+    
+    public static class Step
+    {
+        public static Error NotFound => Error.NotFound(
+            code: "Step.NotFound",
+            description: "Step was not found"
+        );
+
+        public static Error InavalidTitle => Error.Validation(
+            code: "Step.InvalidTitle",
+            description: $"Step title must have between {Models.Step.MinTitleLenght} and  {Models.Step.MaxTitleLenght} characters."
+        );
+
+        public static Error InavalidDescription => Error.Validation(
+            code: "Step.InavalidDescription",
+            description: $"Step description must have between {Models.Step.MinDescriptionLenght} and  {Models.Step.MaxDescriptionLenght} characters."
+        );
+
+    }
 }
