@@ -46,8 +46,8 @@ public class RecipesController : ApiController
         );
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult GetRecipe(Guid id)
+    [HttpGet("{id:int}")]
+    public IActionResult GetRecipe(int id)
     {
         var getRecipeResult = _recipeService.GetRecipe(id);
 
@@ -57,8 +57,8 @@ public class RecipesController : ApiController
         ); 
     }
 
-    [HttpPut("{id:guid}")]
-    public IActionResult UpsertRecipe(Guid id, UpsertRecipeRequest request)
+    [HttpPut("{id:int}")]
+    public IActionResult UpsertRecipe(int id, UpsertRecipeRequest request)
     {
         var getMethodResult = _methodService.GetMethod(request.MethodId);
         if(getMethodResult.IsError) 
@@ -87,8 +87,8 @@ public class RecipesController : ApiController
         );
     }
 
-    [HttpDelete("{id:guid}")]
-    public IActionResult DeleteRecipe(Guid id)
+    [HttpDelete("{id:int}")]
+    public IActionResult DeleteRecipe(int id)
     {
         var deleteRecipeResult = _recipeService.DeleteRecipe(id);
         if(deleteRecipeResult.IsError) {
@@ -105,8 +105,7 @@ public class RecipesController : ApiController
         return new RecipeResponse(
             recipe.Id,
             recipe.Name,
-            recipe.Description,
-            recipe.LastModifiedDateTime
+            recipe.Description
         );
     }
 

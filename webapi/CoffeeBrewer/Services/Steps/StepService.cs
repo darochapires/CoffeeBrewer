@@ -6,7 +6,7 @@ namespace CoffeeBrewer.Services.Steps
 {
     public class StepService : IStepService
     {
-        private static readonly Dictionary<Guid, Step> _steps = new();
+        private static readonly Dictionary<int, Step> _steps = new();
 
         public ErrorOr<Created> CreateStep(Step step)
         {
@@ -14,7 +14,7 @@ namespace CoffeeBrewer.Services.Steps
             return Result.Created;
         }
 
-        public ErrorOr<Step> GetStep(Guid id)
+        public ErrorOr<Step> GetStep(int id)
         {
             if(_steps.TryGetValue(id, out var step))
             {
@@ -30,7 +30,7 @@ namespace CoffeeBrewer.Services.Steps
             return new UpsertedStep(IsNewlyCreated);
         }
 
-        public ErrorOr<Deleted> DeleteStep(Guid id)
+        public ErrorOr<Deleted> DeleteStep(int id)
         {
             _steps.Remove(id);
             return Result.Deleted;

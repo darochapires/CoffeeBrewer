@@ -9,29 +9,26 @@ public class Step
     public const int MinDescriptionLenght = 10;
     public const int MaxDescriptionLenght = 5000;
     
-    public Guid Id { get; }
-    public int Order { get; }
+    public int Id { get; set; }
+    public int Order { get; set; }
     public StepType StepType;
-    public string Title { get; }
-    public string Description { get; }
-    public int DurationInSeconds { get; }
-    public DateTime LastModifiedDateTime { get; }
-    public Recipe Recipe { get; }
-    public double? WaterAmount { get; }
+    public string Title { get; set; }
+    public string? Description { get; set; }
+    public int DurationInSeconds { get; set; }
+    public Recipe Recipe { get; set; }
+    public double? WaterAmount { get; set; }
 
-    protected Step(Guid id, int order, StepType stepType, string title, string description, int durationInSeconds, DateTime lastModifiedDateTime, Recipe recipe, double? waterAmount = null) 
-    {
-        Id = id;
-        Order = order;
-        Title = title;
-        Description = description;
-        DurationInSeconds = durationInSeconds;
-        LastModifiedDateTime = lastModifiedDateTime;
-        Recipe = recipe;
-        StepType = stepType;
-        LastModifiedDateTime = lastModifiedDateTime;
-        WaterAmount = waterAmount;
-    }
+    // protected Step(int id, int order, StepType stepType, string title, string description, int durationInSeconds, Recipe recipe, double? waterAmount = null) 
+    // {
+    //     Id = id;
+    //     Order = order;
+    //     Title = title;
+    //     Description = description;
+    //     DurationInSeconds = durationInSeconds;
+    //     Recipe = recipe;
+    //     StepType = stepType;
+    //     WaterAmount = waterAmount;
+    // }
 /*
     public static ErrorOr<Step> Create(string title, string description, GrindSize grindSize, Recipe recipe, Guid? id = null)
     {

@@ -33,8 +33,8 @@ public class MethodsController : ApiController
         );
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult GetMethod(Guid id)
+    [HttpGet("{id}")]
+    public IActionResult GetMethod(int id)
     {
         var getMethodResult = _methodService.GetMethod(id);
 
@@ -44,8 +44,8 @@ public class MethodsController : ApiController
         ); 
     }
 
-    [HttpPut("{id:guid}")]
-    public IActionResult UpsertMethod(Guid id, UpsertMethodRequest request)
+    [HttpPut("{id}")]
+    public IActionResult UpsertMethod(int id, UpsertMethodRequest request)
     {
         var requestToMethodResult = Method.From(
             id,
@@ -61,13 +61,13 @@ public class MethodsController : ApiController
         var upsertMethodResult = _methodService.UpsertMethod(method);
 
         return upsertMethodResult.Match(
-            upserted => upserted.IsNewlyCreated ? CreatedAtGetMethod(method) : NoContent(),
+            upserted => NoContent(),
             errors => Problem(errors)
         );
     }
 
-    [HttpDelete("{id:guid}")]
-    public IActionResult DeleteMethod(Guid id)
+    [HttpDelete("{id}")]
+    public IActionResult DeleteMethod(int id)
     {
         var deleteMethodResult = _methodService.DeleteMethod(id);
         if(deleteMethodResult.IsError) {
@@ -84,8 +84,7 @@ public class MethodsController : ApiController
         return new MethodResponse(
             method.Id,
             method.Name,
-            method.Description,
-            method.LastModifiedDateTime
+            method.Description
         );
     }
 

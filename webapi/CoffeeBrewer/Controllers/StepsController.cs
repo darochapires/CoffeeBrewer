@@ -46,7 +46,7 @@ public class StepsController : ApiController
     }*/
 
     // [HttpGet("{id:guid}")]
-    // public IActionResult GetStep(Guid id)
+    // public IActionResult GetStep(int id)
     // {
     //     var getStepResult = _stepService.GetStep(id);
 
@@ -57,7 +57,7 @@ public class StepsController : ApiController
     // }
 /*
     [HttpPut("{id:guid}")]
-    public IActionResult UpsertStep(Guid id, UpsertStepRequest request)
+    public IActionResult UpsertStep(int id, UpsertStepRequest request)
     {
         var getRecipeResult = _recipeService.GetRecipe(request.RecipeId);
         if(getRecipeResult.IsError) 
@@ -87,7 +87,7 @@ public class StepsController : ApiController
     }*/
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteStep(Guid id)
+    public IActionResult DeleteStep(int id)
     {
         var deleteStepResult = _stepService.DeleteStep(id);
         if(deleteStepResult.IsError) {

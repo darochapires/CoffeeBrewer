@@ -1,8 +1,7 @@
 namespace CoffeeBrewer.Contracts.CoffeeBrewer.Recipe;
 
 public record RecipeResponse(
-    Guid Id,
+    int Id,
     string Name,
-    string Description,
-    DateTime LastModifiedDateTime
+    string? Description
 );

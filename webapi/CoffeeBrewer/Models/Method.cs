@@ -11,21 +11,20 @@ public class Method
     public const int MinDescriptionLenght = 10;
     public const int MaxDescriptionLenght = 5000;
 
-    public Guid Id { get; }
-    public string Name { get; }
-    public string Description { get; }
-    public DateTime LastModifiedDateTime { get; }
-    public ICollection<Recipe>? Recipes { get; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string? Description { get; set; }
+    public ICollection<Recipe>? Recipes { get; set; }
 
-    private Method(Guid id, string name, string description, DateTime lastModifiedDateTime) 
-    {
-        Id = id;
-        Name = name;
-        Description = description;
-        LastModifiedDateTime = lastModifiedDateTime;
-    }
+    // private Method(int id, string name, string? description, ICollection<Recipe>? recipes) 
+    // {
+    //     Id = id;
+    //     Name = name;
+    //     Description = description;
+    //     Recipes = recipes;
+    // }
 
-    public static ErrorOr<Method> Create(string name, string description, Guid? id = null) 
+    private static ErrorOr<Method> Create(string name, string description, int? id = null) 
     {
         List<Error> errors = new();
         if(name.Length is < MinNameLenght or > MaxNameLenght) 
@@ -40,7 +39,10 @@ public class Method
         {
             return errors;
         }
-        return new Method(id ?? Guid.NewGuid(), name, description, DateTime.UtcNow);
+
+        return id != null ? 
+            new Method { Id = (int)id, Name = name, Description = description, Recipes = null } : 
+            new Method { Name = name, Description = description, Recipes = null };
     }
 
     internal static ErrorOr<Method> From(CreateMethodRequest request)
@@ -48,7 +50,7 @@ public class Method
         return Create(request.Name, request.Description);
     }
 
-    internal static ErrorOr<Method> From(Guid id, UpsertMethodRequest request)
+    internal static ErrorOr<Method> From(int id, UpsertMethodRequest request)
     {
         return Create(request.Name, request.Description, id);
     }

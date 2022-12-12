@@ -12,31 +12,30 @@ public class Recipe
     public const int MinDescriptionLenght = 10;
     public const int MaxDescriptionLenght = 5000;
     
-    public Guid Id { get; }
-    public string Name { get; }
-    public string Description { get; }
-   /* public double WaterAmount { get; }
-    public double CoffeeAmount { get; }
-    public double WaterTemperature { get; }*/
-    public GrindSize GrindSize { get; }
-    public DateTime LastModifiedDateTime { get; }
-    public Method Method { get; }
-    public ICollection<Step>? Steps { get; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string? Description { get; set; }
+   /* public double WaterAmount { get; set; }
+    public double CoffeeAmount { get; set; }
+    public double WaterTemperature { get; set; }*/
+    public GrindSize GrindSize { get; set; }
+    public Method Method { get; set; }
+    public ICollection<Step>? Steps { get; set; }
 
-    private Recipe(Guid id, string name, string description/*, double waterAmount, double coffeeAmount, double waterTemperature*/, GrindSize grindSize, DateTime lastModifiedDateTime, Method method) 
-    {
-        Id = id;
-        Name = name;
-        Description = description;
-        /*WaterAmount = waterAmount;
-        CoffeeAmount = coffeeAmount;
-        WaterTemperature = waterTemperature;*/
-        GrindSize = grindSize;
-        LastModifiedDateTime = lastModifiedDateTime;
-        Method = method;
-    }
+    // private Recipe(int id, string name, string? description/*, double waterAmount, double coffeeAmount, double waterTemperature*/, GrindSize grindSize, Method method, ICollection<Step>? steps) 
+    // {
+    //     Id = id;
+    //     Name = name;
+    //     Description = description;
+    //     /*WaterAmount = waterAmount;
+    //     CoffeeAmount = coffeeAmount;
+    //     WaterTemperature = waterTemperature;*/
+    //     GrindSize = grindSize;
+    //     Method = method;
+    //     Steps = steps;
+    // }
 
-    public static ErrorOr<Recipe> Create(string name, string description, GrindSize grindSize, Method method, Guid? id = null)
+    public static ErrorOr<Recipe> Create(string name, string description, GrindSize grindSize, Method method, int? id = null)
     {
         List<Error> errors = new();
         if(name.Length is < MinNameLenght or > MaxNameLenght) 
@@ -51,7 +50,7 @@ public class Recipe
         {
             return errors;
         }
-        return new Recipe(id ?? Guid.NewGuid(), name, description, grindSize, DateTime.UtcNow, method);
+        return new Recipe { Id = id ?? -1, Name = name, Description = description, GrindSize = grindSize, Method = method, Steps = null};
     }
 
     internal static ErrorOr<Recipe> From(CreateRecipeRequest request, Method method)
@@ -59,7 +58,7 @@ public class Recipe
         return Create(request.Name, request.Description, request.GrindSize, method);
     }
 
-    internal static ErrorOr<Recipe> From(Guid id, UpsertRecipeRequest request, Method method)
+    internal static ErrorOr<Recipe> From(int id, UpsertRecipeRequest request, Method method)
     {
         return Create(request.Name, request.Description, request.GrindSize, method, id);
     }

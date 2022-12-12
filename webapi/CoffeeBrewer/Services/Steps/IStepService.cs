@@ -6,7 +6,7 @@ namespace CoffeeBrewer.Services.Steps;
 public interface IStepService
 {
     ErrorOr<Created> CreateStep(Step step);
-    ErrorOr<Step> GetStep(Guid id);
+    ErrorOr<Step> GetStep(int id);
     ErrorOr<UpsertedStep>  UpsertStep(Step step);
-    ErrorOr<Deleted> DeleteStep(Guid id);
+    ErrorOr<Deleted> DeleteStep(int id);
 }

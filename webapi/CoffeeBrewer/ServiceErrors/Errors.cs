@@ -20,6 +20,12 @@ public static class Errors
             code: "Method.InavalidDescription",
             description: $"Method description must have between {Models.Method.MinDescriptionLenght} and  {Models.Method.MaxDescriptionLenght} characters."
         );
+
+        public static Error UnexpectedError => Error.Unexpected(
+            code: "Method.UnexpectedError",
+            description: $"Something went wrong while updating data. Please try again later."
+        );
+
     }
     
     public static class Recipe

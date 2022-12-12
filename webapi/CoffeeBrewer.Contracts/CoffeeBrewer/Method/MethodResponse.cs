@@ -1,8 +1,7 @@
 namespace CoffeeBrewer.Contracts.CoffeeBrewer.Method;
 
 public record MethodResponse(
-    Guid Id,
+    int Id,
     string Name,
-    string Description,
-    DateTime LastModifiedDateTime
+    string? Description
 );

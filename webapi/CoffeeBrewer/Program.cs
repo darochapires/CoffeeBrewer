@@ -1,7 +1,9 @@
+using CoffeeBrewer.Database;
 using CoffeeBrewer.Services.Methods;
 using CoffeeBrewer.Services.Recipes;
 using CoffeeBrewer.Services.Steps;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -13,6 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
     {
         options.ForwardedHeaders =
             ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    });
+    builder.Services.AddDbContext<CoffeeBrewerContext>(options =>
+    {
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
 }
 

@@ -1,3 +1,4 @@
+using CoffeeBrewer.Database;
 using CoffeeBrewer.Models;
 using CoffeeBrewer.ServiceErrors;
 using ErrorOr;
@@ -6,34 +7,63 @@ namespace CoffeeBrewer.Services.Methods
 {
     public class MethodService : IMethodService
     {
-        private static readonly Dictionary<Guid, Method> _methods = new();
+        private readonly CoffeeBrewerContext _context;
+
+        public MethodService(CoffeeBrewerContext context) 
+        {
+            _context = context;
+        }
 
         public ErrorOr<Created> CreateMethod(Method method)
         {
-            _methods.Add(method.Id, method);
+            _context.Add(method);
+            if(!Save()) 
+            {
+                return Errors.Method.UnexpectedError;
+            }
             return Result.Created;
         }
 
-        public ErrorOr<Method> GetMethod(Guid id)
+        public ErrorOr<Method> GetMethod(int id)
         {
-            if(_methods.TryGetValue(id, out var method))
+            var method = _context.Methods.Where(m => m.Id == id).FirstOrDefault();
+            return method == null ? Errors.Method.NotFound : method;
+        }
+
+        public ErrorOr<List<Method>> GetMethods(int id)
+        {
+            return _context.Methods.ToList();
+        }
+
+        public ErrorOr<Updated> UpsertMethod(Method method)
+        {
+            if(!_context.Methods.Any(m => m.Id == method.Id)) 
             {
-                return method;
+                return Errors.Method.NotFound;
+            }            
+
+            _context.Update(method);
+            if(!Save()) 
+            {
+                return Errors.Method.UnexpectedError;
             }
-            return Errors.Method.NotFound;
+            return Result.Updated;
         }
 
-        public ErrorOr<UpsertedMethod> UpsertMethod(Method method)
+        public ErrorOr<Deleted> DeleteMethod(int id)
         {
-            var IsNewlyCreated = !_methods.ContainsKey(method.Id);
-            _methods[method.Id] = method;
-            return new UpsertedMethod(IsNewlyCreated);
-        }
-
-        public ErrorOr<Deleted> DeleteMethod(Guid id)
-        {
-            _methods.Remove(id);
+            _context.Remove(id);
+            if(!Save()) 
+            {
+                return Errors.Method.UnexpectedError;
+            }
             return Result.Deleted;
+        }
+
+        private bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

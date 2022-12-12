@@ -2,6 +2,6 @@ POST http://localhost:5002/methods
 Content-Type: application/json
 
 {
-    "name": "V60",
-    "description": "V60 description"
+    "name": "Kalita",
+    "description": "Kalita description"
 }

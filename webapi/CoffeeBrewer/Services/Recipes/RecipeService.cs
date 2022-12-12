@@ -6,7 +6,7 @@ namespace CoffeeBrewer.Services.Recipes
 {
     public class RecipeService : IRecipeService
     {
-        private static readonly Dictionary<Guid, Recipe> _recipes = new();
+        private static readonly Dictionary<int, Recipe> _recipes = new();
 
         public ErrorOr<Created> CreateRecipe(Recipe recipe)
         {
@@ -14,7 +14,7 @@ namespace CoffeeBrewer.Services.Recipes
             return Result.Created;
         }
 
-        public ErrorOr<Recipe> GetRecipe(Guid id)
+        public ErrorOr<Recipe> GetRecipe(int id)
         {
             if(_recipes.TryGetValue(id, out var recipe))
             {
@@ -30,7 +30,7 @@ namespace CoffeeBrewer.Services.Recipes
             return new UpsertedRecipe(IsNewlyCreated);
         }
 
-        public ErrorOr<Deleted> DeleteRecipe(Guid id)
+        public ErrorOr<Deleted> DeleteRecipe(int id)
         {
             _recipes.Remove(id);
             return Result.Deleted;
