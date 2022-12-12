@@ -7,6 +7,7 @@ public interface IMethodService
 {
     ErrorOr<Created> CreateMethod(Method method);
     ErrorOr<Method> GetMethod(int id);
+    ErrorOr<List<Method>> GetMethods();
     ErrorOr<Updated> UpsertMethod(Method method);
     ErrorOr<Deleted> DeleteMethod(int id);
 }

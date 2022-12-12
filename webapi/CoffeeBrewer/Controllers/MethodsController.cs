@@ -44,6 +44,17 @@ public class MethodsController : ApiController
         ); 
     }
 
+    [HttpGet]
+    public IActionResult GetMethods(int id)
+    {
+        var getMethodsResult = _methodService.GetMethods();
+
+        return getMethodsResult.Match(
+            methods => Ok(MapMethodResponse(methods)),
+            errors => Problem(errors)
+        ); 
+    }
+
     [HttpPut("{id}")]
     public IActionResult UpsertMethod(int id, UpsertMethodRequest request)
     {
@@ -86,6 +97,21 @@ public class MethodsController : ApiController
             method.Name,
             method.Description
         );
+    }
+
+    private static List<MethodResponse> MapMethodResponse(List<Method> methods)
+    {
+        var methodResponses = new List<MethodResponse>();
+        foreach (var method in methods)
+        {
+            methodResponses.Add(
+                new MethodResponse(
+                method.Id,
+                method.Name,
+                method.Description)
+            );
+        }
+        return methodResponses;
     }
 
     private IActionResult CreatedAtGetMethod(Method method)

@@ -23,6 +23,11 @@ namespace CoffeeBrewer.Services.Methods
             return Errors.Method.NotFound;
         }
 
+        public ErrorOr<List<Method>> GetMethods()
+        {
+            return _methods.Values.ToList();
+        }
+
         public ErrorOr<Updated> UpsertMethod(Method method)
         {
             var IsNewlyCreated = !_methods.ContainsKey(method.Id);

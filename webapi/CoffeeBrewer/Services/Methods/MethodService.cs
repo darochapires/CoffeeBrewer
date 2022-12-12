@@ -30,7 +30,7 @@ namespace CoffeeBrewer.Services.Methods
             return method == null ? Errors.Method.NotFound : method;
         }
 
-        public ErrorOr<List<Method>> GetMethods(int id)
+        public ErrorOr<List<Method>> GetMethods()
         {
             return _context.Methods.ToList();
         }
@@ -52,7 +52,13 @@ namespace CoffeeBrewer.Services.Methods
 
         public ErrorOr<Deleted> DeleteMethod(int id)
         {
-            _context.Remove(id);
+            var method = _context.Methods.FirstOrDefault(m => m.Id == id);
+            if(method == null)
+            {
+                return Errors.Method.NotFound;
+            }
+
+            _context.Remove(method);
             if(!Save()) 
             {
                 return Errors.Method.UnexpectedError;
