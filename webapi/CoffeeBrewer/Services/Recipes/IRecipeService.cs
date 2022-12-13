@@ -7,6 +7,7 @@ public interface IRecipeService
 {
     ErrorOr<Created> CreateRecipe(Recipe recipe);
     ErrorOr<Recipe> GetRecipe(int id);
-    ErrorOr<UpsertedRecipe>  UpsertRecipe(Recipe recipe);
+    ErrorOr<List<Recipe>> GetRecipesByMethod(int methodId);
+    ErrorOr<Updated>  UpsertRecipe(Recipe recipe);
     ErrorOr<Deleted> DeleteRecipe(int id);
 }

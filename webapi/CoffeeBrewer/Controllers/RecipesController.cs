@@ -23,7 +23,7 @@ public class RecipesController : ApiController
         var getMethodResult = _methodService.GetMethod(request.MethodId);
         if(getMethodResult.IsError) 
         {
-            //TODO: add to errors
+            return Problem(getMethodResult.Errors);
         }
         
         var method = getMethodResult.Value;
@@ -46,7 +46,7 @@ public class RecipesController : ApiController
         );
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id}")]
     public IActionResult GetRecipe(int id)
     {
         var getRecipeResult = _recipeService.GetRecipe(id);
@@ -57,13 +57,24 @@ public class RecipesController : ApiController
         ); 
     }
 
-    [HttpPut("{id:int}")]
+    [HttpGet("{id}")]
+    public IActionResult GetRecipesByMethod(int methodId)
+    {
+        var getRecipeResult = _recipeService.GetRecipesByMethod(methodId);
+
+        return getRecipeResult.Match(
+            recipe => Ok(MapRecipeResponse(recipe)),
+            errors => Problem(errors)
+        ); 
+    }
+
+    [HttpPut("{id}")]
     public IActionResult UpsertRecipe(int id, UpsertRecipeRequest request)
     {
         var getMethodResult = _methodService.GetMethod(request.MethodId);
         if(getMethodResult.IsError) 
         {
-            //TODO: add to errors
+            return Problem(getMethodResult.Errors);
         }
         
         var method = getMethodResult.Value;
@@ -82,12 +93,12 @@ public class RecipesController : ApiController
         var upsertRecipeResult = _recipeService.UpsertRecipe(recipe);
 
         return upsertRecipeResult.Match(
-            upserted => upserted.IsNewlyCreated ? CreatedAtGetRecipe(recipe) : NoContent(),
+            upserted => NoContent(),
             errors => Problem(errors)
         );
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id}")]
     public IActionResult DeleteRecipe(int id)
     {
         var deleteRecipeResult = _recipeService.DeleteRecipe(id);
@@ -100,12 +111,33 @@ public class RecipesController : ApiController
         );
     }
 
+    private static List<RecipeResponse> MapRecipeResponse(List<Recipe> recipes)
+    {
+        var recipeResponses = new List<RecipeResponse>();
+        foreach (var recipe in recipes)
+        {
+            recipeResponses.Add(
+                new RecipeResponse(
+                    recipe.Id,
+                    recipe.Name,
+                    recipe.Description,
+                    recipe.WaterTemperature,
+                    recipe.GrindSize,
+                    recipe.Method.Id)
+            );
+        }
+        return recipeResponses;
+    }
+
     private static RecipeResponse MapRecipeResponse(Recipe recipe)
     {
         return new RecipeResponse(
-            recipe.Id,
-            recipe.Name,
-            recipe.Description
+                recipe.Id,
+                recipe.Name,
+                recipe.Description,
+                recipe.WaterTemperature,
+                recipe.GrindSize,
+                recipe.Method.Id
         );
     }
 

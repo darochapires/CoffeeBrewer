@@ -1,9 +1,11 @@
-@id=a89416b0-59d2-4c17-b75f-90106481e25e
 POST http://localhost:5002/recipes
 Content-Type: application/json
 
 {
     "name": "Kasuya's V60",
     "description": "Kasuya's V60 description",
-    "methodId": "bc610abe-b1df-4027-9b13-569f4ec1c0c0"
+    "waterTemperature": 94,
+    "methodId": 1,
+    "grindSize": 0,
+    "steps":[]
 }

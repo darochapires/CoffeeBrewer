@@ -29,11 +29,11 @@ public class Method
         List<Error> errors = new();
         if(name.Length is < MinNameLenght or > MaxNameLenght) 
         {
-            errors.Add(Errors.Method.InavalidName);
+            errors.Add(Errors.Method.InvalidName);
         }
         if(description.Length is < MinDescriptionLenght or > MaxDescriptionLenght) 
         {
-            errors.Add(Errors.Method.InavalidDescription);
+            errors.Add(Errors.Method.InvalidDescription);
         }
         if(errors.Count > 0)
         {
@@ -41,8 +41,8 @@ public class Method
         }
 
         return id != null ? 
-            new Method { Id = (int)id, Name = name, Description = description, Recipes = null } : 
-            new Method { Name = name, Description = description, Recipes = null };
+            new Method { Id = (int)id, Name = name, Description = description } : 
+            new Method { Name = name, Description = description };
     }
 
     internal static ErrorOr<Method> From(CreateMethodRequest request)

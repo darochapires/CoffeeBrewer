@@ -1,4 +1,7 @@
+using CoffeeBrewer.Contracts.CoffeeBrewer.Step;
 using CoffeeBrewer.Contracts.Util;
+using CoffeeBrewer.ServiceErrors;
+using ErrorOr;
 
 namespace CoffeeBrewer.Models;
 
@@ -8,6 +11,8 @@ public class Step
     public const int MaxTitleLenght = 50;
     public const int MinDescriptionLenght = 10;
     public const int MaxDescriptionLenght = 5000;
+    public const int MinDuration = 0;
+    public const int MaxDuration = 7200;
     
     public int Id { get; set; }
     public int Order { get; set; }
@@ -18,43 +23,53 @@ public class Step
     public Recipe Recipe { get; set; }
     public double? WaterAmount { get; set; }
 
-    // protected Step(int id, int order, StepType stepType, string title, string description, int durationInSeconds, Recipe recipe, double? waterAmount = null) 
-    // {
-    //     Id = id;
-    //     Order = order;
-    //     Title = title;
-    //     Description = description;
-    //     DurationInSeconds = durationInSeconds;
-    //     Recipe = recipe;
-    //     StepType = stepType;
-    //     WaterAmount = waterAmount;
-    // }
-/*
-    public static ErrorOr<Step> Create(string title, string description, GrindSize grindSize, Recipe recipe, Guid? id = null)
+    public static ErrorOr<Step> Create(int order, StepType stepType, string title, string? description, int durationInSeconds, Recipe recipe, double? waterAmount, int? id = null)
     {
         List<Error> errors = new();
         if(title.Length is < MinTitleLenght or > MaxTitleLenght) 
         {
-            errors.Add(Errors.Step.InavalidTitle);
+            errors.Add(Errors.Step.InvalidTitle);
         }
-        if(description.Length is < MinDescriptionLenght or > MaxDescriptionLenght) 
+        if(description != null && description.Length is < MinDescriptionLenght or > MaxDescriptionLenght) 
         {
-            errors.Add(Errors.Step.InavalidDescription);
+            errors.Add(Errors.Step.InvalidDescription);
+        }
+        if(durationInSeconds is < MinDuration or > MaxDuration) 
+        {
+            errors.Add(Errors.Step.InvalidDuration);
         }
         if(errors.Count > 0)
         {
             return errors;
         }
-        return new Step(id ?? Guid.NewGuid(), title, description, grindSize, DateTime.UtcNow, recipe);
+        return id != null ? 
+            new Step { 
+                Id = (int)id,
+                Order = order,
+                StepType = stepType,
+                Title = title,
+                Description = description,
+                DurationInSeconds = durationInSeconds,
+                Recipe = recipe,
+                WaterAmount = waterAmount 
+            } :
+            new Step { Order = order,
+                StepType = stepType,
+                Title = title,
+                Description = description,
+                DurationInSeconds = durationInSeconds,
+                Recipe = recipe,
+                WaterAmount = waterAmount
+            };
     }
 
     internal static ErrorOr<Step> From(CreateStepRequest request, Recipe recipe)
     {
-        return Create(request.Title, request.Description, recipe);
+        return Create(request.Order, (StepType)request.StepType, request.Title, request.Description, request.DurationInSeconds, recipe, request.WaterAmount);
     }
 
-    internal static ErrorOr<Step> From(Guid id, UpsertStepRequest request, Recipe recipe)
+    internal static ErrorOr<Step> From(int id, UpsertStepRequest request, Recipe recipe)
     {
-        return Create(request.Title, request.Description, recipe, id);
-    }*/
+        return Create(request.Order, (StepType)request.StepType, request.Title, request.Description, request.DurationInSeconds, recipe, request.WaterAmount, id);
+    }
 }

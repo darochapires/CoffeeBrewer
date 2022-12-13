@@ -5,6 +5,7 @@ namespace CoffeeBrewer.Contracts.CoffeeBrewer.Recipe;
 public record UpsertRecipeRequest(
     string Name,
     string Description,
-    int MethodId,
-    GrindSize GrindSize
+    double WaterTemperature,
+    GrindSize GrindSize,
+    int MethodId
 );

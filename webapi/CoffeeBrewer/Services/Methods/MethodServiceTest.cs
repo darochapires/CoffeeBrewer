@@ -30,7 +30,10 @@ namespace CoffeeBrewer.Services.Methods
 
         public ErrorOr<Updated> UpsertMethod(Method method)
         {
-            var IsNewlyCreated = !_methods.ContainsKey(method.Id);
+            if(!_methods.ContainsKey(method.Id))
+            {
+                return Errors.Method.NotFound;
+            }
             _methods[method.Id] = method;
             return Result.Updated;
         }

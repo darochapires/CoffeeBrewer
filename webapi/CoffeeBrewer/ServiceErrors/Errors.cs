@@ -11,13 +11,13 @@ public static class Errors
             description: "Method was not found"
         );
 
-        public static Error InavalidName => Error.Validation(
+        public static Error InvalidName => Error.Validation(
             code: "Method.InvalidName",
             description: $"Method name must have between {Models.Method.MinNameLenght} and  {Models.Method.MaxNameLenght} characters."
         );
 
-        public static Error InavalidDescription => Error.Validation(
-            code: "Method.InavalidDescription",
+        public static Error InvalidDescription => Error.Validation(
+            code: "Method.InvalidDescription",
             description: $"Method description must have between {Models.Method.MinDescriptionLenght} and  {Models.Method.MaxDescriptionLenght} characters."
         );
 
@@ -35,14 +35,24 @@ public static class Errors
             description: "Recipe was not found"
         );
 
-        public static Error InavalidName => Error.Validation(
+        public static Error InvalidName => Error.Validation(
             code: "Recipe.InvalidName",
-            description: $"Recipe name must have between {Models.Recipe.MinNameLenght} and  {Models.Recipe.MaxNameLenght} characters."
+            description: $"Recipe name must have between {Models.Recipe.MinNameLenght} and {Models.Recipe.MaxNameLenght} characters."
         );
 
-        public static Error InavalidDescription => Error.Validation(
-            code: "Recipe.InavalidDescription",
-            description: $"Recipe description must have between {Models.Recipe.MinDescriptionLenght} and  {Models.Recipe.MaxDescriptionLenght} characters."
+        public static Error InvalidDescription => Error.Validation(
+            code: "Recipe.InvalidDescription",
+            description: $"Recipe description must have between {Models.Recipe.MinDescriptionLenght} and {Models.Recipe.MaxDescriptionLenght} characters."
+        );
+
+        public static Error InvalidWaterTemperature => Error.Validation(
+            code: "Recipe.InvalidWaterTemperature",
+            description: $"Water temperature must be between {Models.Recipe.MinWaterTemperature} and {Models.Recipe.MaxWaterTemperature}."
+        );
+
+        public static Error UnexpectedError => Error.Unexpected(
+            code: "Recipe.UnexpectedError",
+            description: $"Something went wrong while updating data. Please try again later."
         );
 
     }
@@ -54,14 +64,29 @@ public static class Errors
             description: "Step was not found"
         );
 
-        public static Error InavalidTitle => Error.Validation(
+        public static Error InvalidTitle => Error.Validation(
             code: "Step.InvalidTitle",
-            description: $"Step title must have between {Models.Step.MinTitleLenght} and  {Models.Step.MaxTitleLenght} characters."
+            description: $"Step title must have between {Models.Step.MinTitleLenght} and {Models.Step.MaxTitleLenght} characters."
         );
 
-        public static Error InavalidDescription => Error.Validation(
-            code: "Step.InavalidDescription",
-            description: $"Step description must have between {Models.Step.MinDescriptionLenght} and  {Models.Step.MaxDescriptionLenght} characters."
+        public static Error InvalidDescription => Error.Validation(
+            code: "Step.InvalidDescription",
+            description: $"Step description must have between {Models.Step.MinDescriptionLenght} and {Models.Step.MaxDescriptionLenght} characters."
+        );
+
+        public static Error InvalidDuration => Error.Validation(
+            code: "Step.InvalidDuration",
+            description: $"Step duration must be between {Models.Step.MinDuration} and {Models.Step.MaxDuration} seconds."
+        );
+
+        public static Error InvalidWaterAmount => Error.Validation(
+            code: "Step.InvalidWaterAmount",
+            description: $"Water amount must be between {Models.Step.MinWaterAmount} and {Models.Step.MaxWaterAmount} milliliters."
+        );
+
+        public static Error UnexpectedError => Error.Unexpected(
+            code: "Step.UnexpectedError",
+            description: $"Something went wrong while updating data. Please try again later."
         );
 
     }

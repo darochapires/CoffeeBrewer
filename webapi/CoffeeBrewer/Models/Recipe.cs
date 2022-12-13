@@ -11,13 +11,15 @@ public class Recipe
     public const int MaxNameLenght = 50;
     public const int MinDescriptionLenght = 10;
     public const int MaxDescriptionLenght = 5000;
+    public const int MinWaterTemperature = 0;
+    public const int MaxWaterTemperature = 120;
     
     public int Id { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
    /* public double WaterAmount { get; set; }
-    public double CoffeeAmount { get; set; }
-    public double WaterTemperature { get; set; }*/
+    public double CoffeeAmount { get; set; }*/
+    public double WaterTemperature { get; set; }
     public GrindSize GrindSize { get; set; }
     public Method Method { get; set; }
     public ICollection<Step>? Steps { get; set; }
@@ -35,31 +37,52 @@ public class Recipe
     //     Steps = steps;
     // }
 
-    public static ErrorOr<Recipe> Create(string name, string description, GrindSize grindSize, Method method, int? id = null)
+    public static ErrorOr<Recipe> Create(string name, string? description, double waterTemperature, GrindSize grindSize, Method method, List<Step> steps, int? id = null)
     {
         List<Error> errors = new();
         if(name.Length is < MinNameLenght or > MaxNameLenght) 
         {
-            errors.Add(Errors.Recipe.InavalidName);
+            errors.Add(Errors.Recipe.InvalidName);
         }
-        if(description.Length is < MinDescriptionLenght or > MaxDescriptionLenght) 
+        if(description != null && description.Length is < MinDescriptionLenght or > MaxDescriptionLenght) 
         {
-            errors.Add(Errors.Recipe.InavalidDescription);
+            errors.Add(Errors.Recipe.InvalidDescription);
+        }
+        if(waterTemperature is < MinWaterTemperature or > MaxWaterTemperature) 
+        {
+            errors.Add(Errors.Recipe.InvalidWaterTemperature);
         }
         if(errors.Count > 0)
         {
             return errors;
         }
-        return new Recipe { Id = id ?? -1, Name = name, Description = description, GrindSize = grindSize, Method = method, Steps = null};
+
+        return id != null ? 
+            new Recipe { Id = (int)id, Name = name, Description = description, WaterTemperature = waterTemperature, GrindSize = grindSize, Method = method, Steps = steps } :
+            new Recipe { Name = name, Description = description, WaterTemperature = waterTemperature, GrindSize = grindSize, Method = method, Steps = steps };
     }
 
     internal static ErrorOr<Recipe> From(CreateRecipeRequest request, Method method)
     {
-        return Create(request.Name, request.Description, request.GrindSize, method);
+        var steps = new List<Step>();
+        var recipe = Create(request.Name, request.Description, request.WaterTemperature, request.GrindSize, method, null);
+        if(!recipe.IsError)
+        {
+            foreach (var step in request.Steps)
+            {
+                var result = Step.From(request.Steps[0], recipe.Value);
+                if(result.IsError) {
+                    return result.Errors;
+                }
+                steps.Add(result.Value);
+            }
+            recipe.Value.Steps = steps;
+        }
+        return recipe;
     }
 
     internal static ErrorOr<Recipe> From(int id, UpsertRecipeRequest request, Method method)
     {
-        return Create(request.Name, request.Description, request.GrindSize, method, id);
+        return Create(request.Name, request.Description, request.WaterTemperature, request.GrindSize, method, null, id);
     }
 }
