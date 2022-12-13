@@ -1,4 +1,5 @@
 using CoffeeBrewer.Contracts.CoffeeBrewer.Recipe;
+using CoffeeBrewer.Contracts.Util;
 using CoffeeBrewer.Models;
 using CoffeeBrewer.Services.Methods;
 using CoffeeBrewer.Services.Recipes;
@@ -116,14 +117,17 @@ public class RecipesController : ApiController
         var recipeResponses = new List<RecipeResponse>();
         foreach (var recipe in recipes)
         {
+            var waterAmount = recipe.Steps?.Where(s => s.StepType.Equals(StepType.Pour)).Sum(s => s.WaterAmount);
             recipeResponses.Add(
                 new RecipeResponse(
                     recipe.Id,
                     recipe.Name,
                     recipe.Description,
+                    recipe.CoffeeAmount,
                     recipe.WaterTemperature,
                     recipe.GrindSize,
-                    recipe.Method.Id)
+                    recipe.Method.Id,
+                    waterAmount ?? 0)
             );
         }
         return recipeResponses;
@@ -131,13 +135,16 @@ public class RecipesController : ApiController
 
     private static RecipeResponse MapRecipeResponse(Recipe recipe)
     {
+        var waterAmount = recipe.Steps?.Where(s => s.StepType.Equals(StepType.Pour)).Sum(s => s.WaterAmount);
         return new RecipeResponse(
                 recipe.Id,
                 recipe.Name,
                 recipe.Description,
+                recipe.CoffeeAmount,
                 recipe.WaterTemperature,
                 recipe.GrindSize,
-                recipe.Method.Id
+                recipe.Method.Id,
+                waterAmount ?? 0
         );
     }
 

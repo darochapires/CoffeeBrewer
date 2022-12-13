@@ -13,6 +13,8 @@ public class Step
     public const int MaxDescriptionLenght = 5000;
     public const int MinDuration = 0;
     public const int MaxDuration = 7200;
+    public const int MinWaterAmount = 1;
+    public const int MaxWaterAmount = 100000;
     
     public int Id { get; set; }
     public int Order { get; set; }
@@ -37,6 +39,10 @@ public class Step
         if(durationInSeconds is < MinDuration or > MaxDuration) 
         {
             errors.Add(Errors.Step.InvalidDuration);
+        }
+        if(stepType.Equals(StepType.Pour) && waterAmount is < MinWaterAmount or > MaxWaterAmount) 
+        {
+            errors.Add(Errors.Step.InvalidWaterAmount);
         }
         if(errors.Count > 0)
         {

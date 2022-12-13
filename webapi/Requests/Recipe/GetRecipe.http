@@ -1,3 +1,3 @@
-@id=627a306a-4d90-4890-8d5f-415f434d28c7
+@id=1
 
 GET  http://localhost:5002/recipes/{{id}}

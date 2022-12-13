@@ -6,8 +6,10 @@ public record RecipeResponse(
     int Id,
     string Name,
     string? Description,
+    double CoffeeAmount,
     double WaterTemperature,
     GrindSize GrindSize,
-    int MethodId
+    int MethodId,
+    double WaterAmount
     //TODO: ICollection<Step>? Steps
 );

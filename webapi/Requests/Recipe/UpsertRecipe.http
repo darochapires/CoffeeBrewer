@@ -1,4 +1,4 @@
-@id=bd2e788f-b425-4afb-bfcb-6ea7f25fd5f9
+@id=1
 
 PUT  http://localhost:5002/recipes/{{id}}
 Content-Type: application/json
@@ -6,5 +6,8 @@ Content-Type: application/json
 {
     "name": "Hoffmann's V60",
     "description": "Hoffmann's V60 description",
-    "methodId": "bc610abe-b1df-4027-9b13-569f4ec1c0c0"
+    "coffeeAmount": 15,
+    "waterTemperature": 94,
+    "methodId": 1,
+    "grindSize": 0
 }

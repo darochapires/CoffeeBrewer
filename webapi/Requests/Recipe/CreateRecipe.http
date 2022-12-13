@@ -4,8 +4,8 @@ Content-Type: application/json
 {
     "name": "Kasuya's V60",
     "description": "Kasuya's V60 description",
+    "coffeeAmount": 15,
     "waterTemperature": 94,
     "methodId": 1,
-    "grindSize": 0,
-    "steps":[]
+    "grindSize": 0
 }

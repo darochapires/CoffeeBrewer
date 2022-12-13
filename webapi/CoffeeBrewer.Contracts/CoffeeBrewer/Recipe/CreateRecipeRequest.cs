@@ -6,8 +6,8 @@ namespace CoffeeBrewer.Contracts.CoffeeBrewer.Recipe;
 public record CreateRecipeRequest(
     string Name,
     string Description,
+    double CoffeeAmount,
     double WaterTemperature,
     GrindSize GrindSize,
-    int MethodId,
-    List<CreateStepRequest> Steps
+    int MethodId
 );
