@@ -1,3 +1,4 @@
+using CoffeeBrewer.Contracts.CoffeeBrewer.Step;
 using CoffeeBrewer.Models;
 using CoffeeBrewer.Services.Recipes;
 using CoffeeBrewer.Services.Steps;
@@ -15,20 +16,20 @@ public class StepsController : ApiController
         _stepService = stepService;
         _recipeService = recipeService;
     }
-/*
+
     [HttpPost]
     public IActionResult CreateStep(CreateStepRequest request)
     {
         var getRecipeResult = _recipeService.GetRecipe(request.RecipeId);
         if(getRecipeResult.IsError) 
         {
-            //TODO: add to errors
+            return Problem(getRecipeResult.Errors);
         }
         
-        var method = getRecipeResult.Value;
+        var recipe = getRecipeResult.Value;
         var requestToStepResult = Step.From(
             request, 
-            method
+            recipe
         );
 
         if(requestToStepResult.IsError)
@@ -43,26 +44,37 @@ public class StepsController : ApiController
             created => CreatedAtGetStep(step),
             errors => Problem(errors)
         );
-    }*/
+    }
 
-    // [HttpGet("{id:guid}")]
-    // public IActionResult GetStep(int id)
-    // {
-    //     var getStepResult = _stepService.GetStep(id);
+    [HttpGet("{id}")]
+    public IActionResult GetStep(int id)
+    {
+        var getStepResult = _stepService.GetStep(id);
 
-    //     return getStepResult.Match(
-    //         step => Ok(MapStepResponse(step)),
-    //         errors => Problem(errors)
-    //     ); 
-    // }
-/*
-    [HttpPut("{id:guid}")]
+        return getStepResult.Match(
+            step => Ok(MapStepResponse(step)),
+            errors => Problem(errors)
+        ); 
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetStepsByRecipe(int recipeId)
+    {
+        var getStepResult = _stepService.GetStepsByRecipe(recipeId);
+
+        return getStepResult.Match(
+            steps => Ok(MapStepResponse(steps)),
+            errors => Problem(errors)
+        ); 
+    }
+
+    [HttpPut("{id}")]
     public IActionResult UpsertStep(int id, UpsertStepRequest request)
     {
         var getRecipeResult = _recipeService.GetRecipe(request.RecipeId);
         if(getRecipeResult.IsError) 
         {
-            //TODO: add to errors
+            return Problem(getRecipeResult.Errors);
         }
         
         var recipe = getRecipeResult.Value;
@@ -81,12 +93,12 @@ public class StepsController : ApiController
         var upsertStepResult = _stepService.UpsertStep(step);
 
         return upsertStepResult.Match(
-            upserted => upserted.IsNewlyCreated ? CreatedAtGetStep(step) : NoContent(),
+            upserted => NoContent(),
             errors => Problem(errors)
         );
-    }*/
+    }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id}")]
     public IActionResult DeleteStep(int id)
     {
         var deleteStepResult = _stepService.DeleteStep(id);
@@ -98,28 +110,36 @@ public class StepsController : ApiController
             errors => Problem(errors)
         );
     }
+    
+    private static List<StepResponse> MapStepResponse(List<Step> steps)
+    {
+        var stepsResponse = new List<StepResponse>();
+        foreach (var step in steps)
+        {
+            stepsResponse.Add(MapStepResponse(step));
+        }
+        return stepsResponse;
+    }
 
-    // private static StepResponse MapStepResponse(Step step)
-    // {
-    //     return new StepResponse(
-    //         step.Id,
-    //         step.Order,
-    //         step.StepType,
-    //         step.Title,
-    //         step.Description,
-    //         step.DurationInSeconds,
-    //         step.LastModifiedDateTime,
-    //         step.Recipe.Id,
-    //         step.WaterAmount
-    //     );
-    // }
+    private static StepResponse MapStepResponse(Step step)
+    {
+        return new StepResponse(
+                step.Id,
+                step.Order,
+                step.StepType,
+                step.Title,
+                step.Description,
+                step.DurationInSeconds,
+                step.Recipe.Id,
+                step.WaterAmount);
+    }
 
-    // private IActionResult CreatedAtGetStep(Step step)
-    // {
-    //     return CreatedAtAction(
-    //         actionName: nameof(GetStep),
-    //         routeValues: new { id = step.Id },
-    //         value: MapStepResponse(step)
-    //     );
-    // }
+    private IActionResult CreatedAtGetStep(Step step)
+    {
+        return CreatedAtAction(
+            actionName: nameof(GetStep),
+            routeValues: new { id = step.Id },
+            value: MapStepResponse(step)
+        );
+    }
 }

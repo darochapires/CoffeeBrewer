@@ -28,6 +28,10 @@ public class Step
     public static ErrorOr<Step> Create(int order, StepType stepType, string title, string? description, int durationInSeconds, Recipe recipe, double? waterAmount, int? id = null)
     {
         List<Error> errors = new();
+        if(order < 0) 
+        {
+            errors.Add(Errors.Step.InvalidOrder);
+        }
         if(title.Length is < MinTitleLenght or > MaxTitleLenght) 
         {
             errors.Add(Errors.Step.InvalidTitle);

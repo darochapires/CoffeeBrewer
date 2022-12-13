@@ -90,6 +90,16 @@ public class MethodsController : ApiController
         );
     }
 
+    private static List<MethodResponse> MapMethodResponse(List<Method> methods)
+    {
+        var methodsResponse = new List<MethodResponse>();
+        foreach (var method in methods)
+        {
+            methodsResponse.Add(MapMethodResponse(method));
+        }
+        return methodsResponse;
+    }
+
     private static MethodResponse MapMethodResponse(Method method)
     {
         return new MethodResponse(
@@ -97,21 +107,6 @@ public class MethodsController : ApiController
             method.Name,
             method.Description
         );
-    }
-
-    private static List<MethodResponse> MapMethodResponse(List<Method> methods)
-    {
-        var methodResponses = new List<MethodResponse>();
-        foreach (var method in methods)
-        {
-            methodResponses.Add(
-                new MethodResponse(
-                method.Id,
-                method.Name,
-                method.Description)
-            );
-        }
-        return methodResponses;
     }
 
     private IActionResult CreatedAtGetMethod(Method method)

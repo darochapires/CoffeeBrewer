@@ -64,7 +64,7 @@ public class RecipesController : ApiController
         var getRecipeResult = _recipeService.GetRecipesByMethod(methodId);
 
         return getRecipeResult.Match(
-            recipe => Ok(MapRecipeResponse(recipe)),
+            recipes => Ok(MapRecipeResponse(recipes)),
             errors => Problem(errors)
         ); 
     }
@@ -114,23 +114,12 @@ public class RecipesController : ApiController
 
     private static List<RecipeResponse> MapRecipeResponse(List<Recipe> recipes)
     {
-        var recipeResponses = new List<RecipeResponse>();
+        var recipesResponse = new List<RecipeResponse>();
         foreach (var recipe in recipes)
         {
-            var waterAmount = recipe.Steps?.Where(s => s.StepType.Equals(StepType.Pour)).Sum(s => s.WaterAmount);
-            recipeResponses.Add(
-                new RecipeResponse(
-                    recipe.Id,
-                    recipe.Name,
-                    recipe.Description,
-                    recipe.CoffeeAmount,
-                    recipe.WaterTemperature,
-                    recipe.GrindSize,
-                    recipe.Method.Id,
-                    waterAmount ?? 0)
-            );
+            recipesResponse.Add(MapRecipeResponse(recipe));
         }
-        return recipeResponses;
+        return recipesResponse;
     }
 
     private static RecipeResponse MapRecipeResponse(Recipe recipe)

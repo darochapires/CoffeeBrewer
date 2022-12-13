@@ -69,6 +69,11 @@ public static class Errors
             description: "Step was not found"
         );
 
+        public static Error InvalidOrder => Error.Validation(
+            code: "Step.InvalidOrder",
+            description: $"Step Order must not be negative."
+        );
+
         public static Error InvalidTitle => Error.Validation(
             code: "Step.InvalidTitle",
             description: $"Step Title must have between {Models.Step.MinTitleLenght} and {Models.Step.MaxTitleLenght} characters."

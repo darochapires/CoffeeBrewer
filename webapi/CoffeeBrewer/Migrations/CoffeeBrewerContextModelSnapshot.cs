@@ -32,7 +32,7 @@ namespace CoffeeBrewer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Methods");
+                    b.ToTable("Methods", (string)null);
                 });
 
             modelBuilder.Entity("CoffeeBrewer.Models.Recipe", b =>
@@ -64,7 +64,7 @@ namespace CoffeeBrewer.Migrations
 
                     b.HasIndex("MethodId");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("CoffeeBrewer.Models.Step", b =>
@@ -96,7 +96,7 @@ namespace CoffeeBrewer.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Steps");
+                    b.ToTable("Steps", (string)null);
                 });
 
             modelBuilder.Entity("CoffeeBrewer.Models.Recipe", b =>

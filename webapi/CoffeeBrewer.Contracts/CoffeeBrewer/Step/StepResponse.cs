@@ -9,7 +9,6 @@ public record StepResponse(
     string Title,
     string? Description,
     int DurationInSeconds,
-    DateTime LastModifiedDateTime,
     int RecipeId,
     double? WaterAmount
 );
