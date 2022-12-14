@@ -7,5 +7,5 @@ Content-Type: application/json
     "coffeeAmount": 15,
     "waterTemperature": 94,
     "methodId": 1,
-    "grindSize": 0
+    "grindSize": 3
 }

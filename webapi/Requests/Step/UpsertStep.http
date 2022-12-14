@@ -4,10 +4,9 @@ PUT  http://localhost:5002/steps/{{id}}
 Content-Type: application/json
 
 {
-    "name": "Hoffmann's V60",
-    "description": "Hoffmann's V60 description",
-    "coffeeAmount": 15,
-    "waterTemperature": 94,
-    "methodId": 1,
-    "grindSize": 0
+    "order": 0,
+    "stepType": 0,
+    "title": "Make a hole",
+    "description": "Make a hole in the middle of the coffee bed with a fine straw",
+    "durationInSeconds": 30
 }

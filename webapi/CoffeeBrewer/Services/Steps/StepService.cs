@@ -2,6 +2,7 @@ using CoffeeBrewer.Database;
 using CoffeeBrewer.Models;
 using CoffeeBrewer.ServiceErrors;
 using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeBrewer.Services.Steps
 {
@@ -37,11 +38,14 @@ namespace CoffeeBrewer.Services.Steps
 
         public ErrorOr<Updated> UpsertStep(Step step)
         {
-            if(!_context.Steps.Any(r => r.Id == step.Id)) 
+            var contextStep = _context.Steps.SingleOrDefault(s => s.Id == step.Id);
+            if(contextStep == null) 
             {
                 return Errors.Step.NotFound;
-            }            
+            }
+            _context.Entry(contextStep).State = EntityState.Detached;
 
+            step.RecipeId = contextStep.RecipeId;
             _context.Update(step);
             if(!Save()) 
             {

@@ -57,7 +57,7 @@ public class StepsController : ApiController
         ); 
     }
 
-    [HttpGet("{recipeId}")]
+    [HttpGet("GetByRecipe/{recipeId}")]
     public IActionResult GetStepsByRecipe(int recipeId)
     {
         var getStepResult = _stepService.GetStepsByRecipe(recipeId);
@@ -70,18 +70,10 @@ public class StepsController : ApiController
 
     [HttpPut("{id}")]
     public IActionResult UpsertStep(int id, UpsertStepRequest request)
-    {
-        var getRecipeResult = _recipeService.GetRecipe(request.RecipeId);
-        if(getRecipeResult.IsError) 
-        {
-            return Problem(getRecipeResult.Errors);
-        }
-        
-        var recipe = getRecipeResult.Value;
+    {        
         var requestToStepResult = Step.From(
             id,
-            request,
-            recipe
+            request
         );
 
         if(requestToStepResult.IsError)

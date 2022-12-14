@@ -72,17 +72,9 @@ public class RecipesController : ApiController
     [HttpPut("{id}")]
     public IActionResult UpsertRecipe(int id, UpsertRecipeRequest request)
     {
-        var getMethodResult = _methodService.GetMethod(request.MethodId);
-        if(getMethodResult.IsError) 
-        {
-            return Problem(getMethodResult.Errors);
-        }
-        
-        var method = getMethodResult.Value;
         var requestToRecipeResult = Recipe.From(
             id,
-            request,
-            method
+            request
         );
 
         if(requestToRecipeResult.IsError)

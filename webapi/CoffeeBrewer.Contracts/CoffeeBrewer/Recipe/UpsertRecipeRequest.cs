@@ -7,6 +7,5 @@ public record UpsertRecipeRequest(
     string Description,
     double CoffeeAmount,
     double WaterTemperature,
-    GrindSize GrindSize,
-    int MethodId
+    GrindSize GrindSize
 );

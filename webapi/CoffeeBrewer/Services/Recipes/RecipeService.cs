@@ -2,6 +2,7 @@ using CoffeeBrewer.Database;
 using CoffeeBrewer.Models;
 using CoffeeBrewer.ServiceErrors;
 using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeBrewer.Services.Recipes
 {
@@ -37,11 +38,14 @@ namespace CoffeeBrewer.Services.Recipes
 
         public ErrorOr<Updated> UpsertRecipe(Recipe recipe)
         {
-            if(!_context.Recipes.Any(r => r.Id == recipe.Id)) 
+            var contextRecipe = _context.Recipes.FirstOrDefault(r => r.Id == recipe.Id);
+            if(contextRecipe == null) 
             {
                 return Errors.Recipe.NotFound;
-            }            
+            }
+            _context.Entry(contextRecipe).State = EntityState.Detached;
 
+            recipe.MethodId = contextRecipe.MethodId;
             _context.Update(recipe);
             if(!Save()) 
             {

@@ -6,6 +6,5 @@ public record UpsertStepRequest(
     string Title,
     string? Description,
     int DurationInSeconds,
-    double? WaterAmount,
-    int RecipeId
+    double? WaterAmount
 );

@@ -18,7 +18,7 @@ public class Step
     
     public int Id { get; set; }
     public int Order { get; set; }
-    public StepType StepType;
+    public StepType StepType { get; set; }
     public string Title { get; set; }
     public string? Description { get; set; }
     public int DurationInSeconds { get; set; }
@@ -26,7 +26,7 @@ public class Step
     public Recipe Recipe { get; set; }
     public double? WaterAmount { get; set; }
 
-    public static ErrorOr<Step> Create(int order, StepType stepType, string title, string? description, int durationInSeconds, Recipe recipe, double? waterAmount, int? id = null)
+    public static ErrorOr<Step> Create(int order, StepType stepType, string title, string? description, int durationInSeconds, double? waterAmount, Recipe? recipe = null, int? id = null)
     {
         List<Error> errors = new();
         if(order < 0) 
@@ -61,7 +61,6 @@ public class Step
                 Title = title,
                 Description = description,
                 DurationInSeconds = durationInSeconds,
-                Recipe = recipe,
                 WaterAmount = waterAmount 
             } :
             new Step { Order = order,
@@ -69,18 +68,18 @@ public class Step
                 Title = title,
                 Description = description,
                 DurationInSeconds = durationInSeconds,
-                Recipe = recipe,
+                Recipe = recipe!,
                 WaterAmount = waterAmount
             };
     }
 
     internal static ErrorOr<Step> From(CreateStepRequest request, Recipe recipe)
     {
-        return Create(request.Order, (StepType)request.StepType, request.Title, request.Description, request.DurationInSeconds, recipe, request.WaterAmount);
+        return Create(request.Order, (StepType)request.StepType, request.Title, request.Description, request.DurationInSeconds, request.WaterAmount, recipe);
     }
 
-    internal static ErrorOr<Step> From(int id, UpsertStepRequest request, Recipe recipe)
+    internal static ErrorOr<Step> From(int id, UpsertStepRequest request)
     {
-        return Create(request.Order, (StepType)request.StepType, request.Title, request.Description, request.DurationInSeconds, recipe, request.WaterAmount, id);
+        return Create(request.Order, (StepType)request.StepType, request.Title, request.Description, request.DurationInSeconds, request.WaterAmount, id: id);
     }
 }

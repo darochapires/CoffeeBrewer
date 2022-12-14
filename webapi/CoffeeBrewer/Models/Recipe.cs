@@ -26,7 +26,7 @@ public class Recipe
     public Method Method { get; set; }
     public ICollection<Step>? Steps { get; set; }
 
-    public static ErrorOr<Recipe> Create(string name, string? description, double coffeeAmount, double waterTemperature, GrindSize grindSize, Method method, int? id = null, List<Step>? steps = null)
+    public static ErrorOr<Recipe> Create(string name, string? description, double coffeeAmount, double waterTemperature, GrindSize grindSize, Method? method = null, int? id = null, List<Step>? steps = null)
     {
         List<Error> errors = new();
         if(name.Length is < MinNameLenght or > MaxNameLenght) 
@@ -51,8 +51,22 @@ public class Recipe
         }
 
         return id != null ? 
-            new Recipe { Id = (int)id, Name = name, Description = description, CoffeeAmount = coffeeAmount, WaterTemperature = waterTemperature, GrindSize = grindSize, Method = method, Steps = steps } :
-            new Recipe { Name = name, Description = description, CoffeeAmount = coffeeAmount, WaterTemperature = waterTemperature, GrindSize = grindSize, Method = method, Steps = steps };
+            new Recipe { 
+                Id = (int)id,
+                Name = name,
+                Description = description,
+                CoffeeAmount = coffeeAmount,
+                WaterTemperature = waterTemperature,
+                GrindSize = grindSize,
+                Steps = steps } :
+            new Recipe { 
+                Name = name,
+                Description = description,
+                CoffeeAmount = coffeeAmount,
+                WaterTemperature = waterTemperature,
+                GrindSize = grindSize,
+                Method = method!,
+                Steps = steps };
     }
 
     internal static ErrorOr<Recipe> From(CreateRecipeRequest request, Method method)
@@ -60,8 +74,8 @@ public class Recipe
         return Create(request.Name, request.Description, request.CoffeeAmount, request.WaterTemperature, request.GrindSize, method);
     }
 
-    internal static ErrorOr<Recipe> From(int id, UpsertRecipeRequest request, Method method)
+    internal static ErrorOr<Recipe> From(int id, UpsertRecipeRequest request)
     {
-        return Create(request.Name, request.Description, request.CoffeeAmount, request.WaterTemperature, request.GrindSize, method, id);
+        return Create(request.Name, request.Description, request.CoffeeAmount, request.WaterTemperature, request.GrindSize, id: id);
     }
 }

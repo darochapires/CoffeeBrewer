@@ -8,6 +8,5 @@ Content-Type: application/json
     "description": "Hoffmann's V60 description",
     "coffeeAmount": 15,
     "waterTemperature": 94,
-    "methodId": 1,
     "grindSize": 0
 }

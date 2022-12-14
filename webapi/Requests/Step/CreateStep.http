@@ -2,10 +2,11 @@ POST http://localhost:5002/steps
 Content-Type: application/json
 
 {
-    "name": "Kasuya's V60",
-    "description": "Kasuya's V60 description",
-    "coffeeAmount": 15,
-    "waterTemperature": 94,
-    "methodId": 1,
-    "grindSize": 0
+    "order": 2,
+    "stepType": 1,
+    "title": "Pour water",
+    "description": "Pour 40 gr of water slowly in a circular motion",
+    "durationInSeconds": 25,
+    "recipeId": 1,
+    "waterAmount": 40
 }

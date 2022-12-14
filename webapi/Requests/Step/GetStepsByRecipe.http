@@ -1,2 +1,2 @@
- @id=1
-GET  http://localhost:5002/steps
+ @recipeId=1
+GET  http://localhost:5002/steps/GetByRecipe/{{recipeId}}
