@@ -1,0 +1,3 @@
+@id=1
+
+DELETE  http://localhost:5002/recipe/{{id}}

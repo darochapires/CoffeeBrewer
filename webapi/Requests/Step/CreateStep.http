@@ -1,0 +1,12 @@
+POST http://localhost:5002/steps
+Content-Type: application/json
+
+{
+    "order": 2,
+    "stepType": 1,
+    "title": "Pour water",
+    "description": "Pour 40 gr of water slowly in a circular motion",
+    "durationInSeconds": 25,
+    "recipeId": 1,
+    "waterAmount": 40
+}

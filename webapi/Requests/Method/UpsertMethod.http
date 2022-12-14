@@ -1,0 +1,9 @@
+@id=3
+
+PUT  http://localhost:5002/methods/{{id}}
+Content-Type: application/json
+
+{
+    "name": "Origami",
+    "description": "Origami description"
+}

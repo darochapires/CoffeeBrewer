@@ -1,0 +1,12 @@
+@id=1
+
+PUT  http://localhost:5002/recipes/{{id}}
+Content-Type: application/json
+
+{
+    "name": "Hoffmann's V60",
+    "description": "Hoffmann's V60 description",
+    "coffeeAmount": 15,
+    "waterTemperature": 94,
+    "grindSize": 0
+}

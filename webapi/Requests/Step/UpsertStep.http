@@ -1,0 +1,12 @@
+@id=1
+
+PUT  http://localhost:5002/steps/{{id}}
+Content-Type: application/json
+
+{
+    "order": 0,
+    "stepType": 0,
+    "title": "Make a hole",
+    "description": "Make a hole in the middle of the coffee bed with a fine straw",
+    "durationInSeconds": 30
+}

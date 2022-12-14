@@ -1,0 +1,2 @@
+@methodId=1
+GET  http://localhost:5002/recipes/GetByMethod/{{methodId}}
