@@ -32,7 +32,7 @@ namespace CoffeeBrewer.Services.Steps
 
         public ErrorOr<List<Step>> GetStepsByRecipe(int recipeId)
         {
-            return _context.Steps.Where(r => r.Recipe.Id == recipeId).ToList();
+            return _context.Steps.Where(s => s.RecipeId == recipeId).ToList();
         }
 
         public ErrorOr<Updated> UpsertStep(Step step)

@@ -58,7 +58,7 @@ public class RecipesController : ApiController
         ); 
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("GetByMethod/{methodId}")]
     public IActionResult GetRecipesByMethod(int methodId)
     {
         var getRecipeResult = _recipeService.GetRecipesByMethod(methodId);
@@ -132,7 +132,7 @@ public class RecipesController : ApiController
                 recipe.CoffeeAmount,
                 recipe.WaterTemperature,
                 recipe.GrindSize,
-                recipe.Method.Id,
+                recipe.MethodId,
                 waterAmount ?? 0
         );
     }

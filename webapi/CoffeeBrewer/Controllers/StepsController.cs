@@ -57,7 +57,7 @@ public class StepsController : ApiController
         ); 
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{recipeId}")]
     public IActionResult GetStepsByRecipe(int recipeId)
     {
         var getStepResult = _stepService.GetStepsByRecipe(recipeId);
@@ -130,7 +130,7 @@ public class StepsController : ApiController
                 step.Title,
                 step.Description,
                 step.DurationInSeconds,
-                step.Recipe.Id,
+                step.RecipeId,
                 step.WaterAmount);
     }
 

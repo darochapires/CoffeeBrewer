@@ -22,6 +22,7 @@ public class Step
     public string Title { get; set; }
     public string? Description { get; set; }
     public int DurationInSeconds { get; set; }
+    public int RecipeId { get; set; }
     public Recipe Recipe { get; set; }
     public double? WaterAmount { get; set; }
 

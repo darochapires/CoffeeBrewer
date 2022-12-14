@@ -32,7 +32,7 @@ namespace CoffeeBrewer.Services.Recipes
 
         public ErrorOr<List<Recipe>> GetRecipesByMethod(int methodId)
         {
-            return _context.Recipes.Where(r => r.Method.Id == methodId).ToList();
+            return _context.Recipes.Where(r => r.MethodId == methodId).ToList();
         }
 
         public ErrorOr<Updated> UpsertRecipe(Recipe recipe)

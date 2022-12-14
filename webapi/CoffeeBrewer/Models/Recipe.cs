@@ -22,6 +22,7 @@ public class Recipe
     public double CoffeeAmount { get; set; }
     public double WaterTemperature { get; set; }
     public GrindSize GrindSize { get; set; }
+    public int MethodId { get; set; }
     public Method Method { get; set; }
     public ICollection<Step>? Steps { get; set; }
 
