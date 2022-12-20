@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IMethodService, MethodService>();
     builder.Services.AddScoped<IRecipeService, RecipeService>();
     builder.Services.AddScoped<IStepService, StepService>();
+    builder.Services.AddSwaggerGen();
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
         options.ForwardedHeaders =
@@ -24,6 +25,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Coffee Brewer API V1");
+    });
+    if (app.Environment.IsDevelopment()) 
+    {
+        app.UseDeveloperExceptionPage();
+    }
     app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
     app.MapControllers();

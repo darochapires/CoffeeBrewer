@@ -5,7 +5,7 @@ namespace CoffeeBrewer.Controllers;
 public class ErrorsController : ControllerBase
 {
     [Route("/error")]
-    public IActionResult Error()
+    internal IActionResult Error()
     {
         return Problem();
     }
