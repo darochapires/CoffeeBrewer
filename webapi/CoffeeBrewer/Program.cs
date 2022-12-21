@@ -1,4 +1,5 @@
 using CoffeeBrewer.Database;
+using CoffeeBrewer.Helpers;
 using CoffeeBrewer.Services.Methods;
 using CoffeeBrewer.Services.Recipes;
 using CoffeeBrewer.Services.Steps;
@@ -37,5 +38,6 @@ var app = builder.Build();
     app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
     app.MapControllers();
+    app.MigrateDatabase();
     app.Run();
 }

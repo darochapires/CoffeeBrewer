@@ -14,12 +14,4 @@ public class CoffeeBrewerContext : DbContext
     {
         
     }
-
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     modelBuilder.Entity<Method>().HasKey(m => new {  });
-    // }
-
-    // protected override void OnConfiguring(DbContextOptionsBuilder options) => 
-    //     options.UseSqlite(@"Data Source=./Database/CoffeeBrewer.db");
 }
