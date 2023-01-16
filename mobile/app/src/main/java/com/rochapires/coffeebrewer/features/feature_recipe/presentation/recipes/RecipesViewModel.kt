@@ -33,15 +33,12 @@ class RecipesViewModel @Inject constructor(
     //private var getRecipesJob: Job? = null
 
     init {
-        var methodId = savedStateHandle.get<String>(Constants.METHOD_ID)
+        var methodId = savedStateHandle.get<Int>(Constants.DEFAULT_METHOD_KEY)
         if(methodId == null) {
             viewModelScope.launch {
                 methodId = recipesUseCase.getDefaultMethodUseCase()
             }
         }
-        //savedStateHandle.get<Int>(Constants.METHOD_ID)?.let { methodId ->
-        //    getRecipes(methodId, RecipeOrder.Date(OrderType.Descending))
-        //}
         methodId?.let {
             getRecipes(it, RecipeOrder.Date(OrderType.Descending))
         }
@@ -74,10 +71,12 @@ class RecipesViewModel @Inject constructor(
                     isOrderSectionVisible = !state.value.isOrderSectionVisible
                 )
             }
+            is RecipesEvent.ItemSelected -> {
+
+            }
         }
     }
 
-    //
 //    private fun getRecipes(recipeOrder: RecipeOrder) {
 //        getRecipesJob?.cancel()
 //        getRecipesJob = recipesUseCase.getRecipesUseCase(recipeOrder)
@@ -90,7 +89,7 @@ class RecipesViewModel @Inject constructor(
 //            .launchIn(viewModelScope)
 //    }
 
-    private fun getRecipes(methodId: String, recipeOrder: RecipeOrder) {
+    private fun getRecipes(methodId: Int, recipeOrder: RecipeOrder) {
         recipesUseCase.getRecipesByMethodIdUseCase(methodId).onEach { recipes ->
             when (recipes) {
                 is Resource.Success -> {

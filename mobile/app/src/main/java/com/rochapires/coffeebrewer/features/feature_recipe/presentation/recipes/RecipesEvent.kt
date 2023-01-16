@@ -8,4 +8,5 @@ sealed class RecipesEvent {
     data class DeleteRecipe(val recipe: Recipe): RecipesEvent()
     object RestoreRecipe: RecipesEvent()
     object ToggleOrderSection: RecipesEvent()
+    data class ItemSelected(val recipe: Recipe): RecipesEvent()
 }

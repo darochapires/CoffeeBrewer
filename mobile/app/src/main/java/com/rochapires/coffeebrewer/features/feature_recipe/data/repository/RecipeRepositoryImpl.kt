@@ -21,15 +21,15 @@ class RecipeRepositoryImpl(
         return api.getMethods()
     }
 
-    override suspend fun getMethodById(id: String): Method? {
+    override suspend fun getMethodById(id: Int): Method? {
         return api.getMethodById(id)
     }
 
-    override suspend fun getRecipesByMethodId(id: String): List<Recipe> {
+    override suspend fun getRecipesByMethodId(id: Int): List<Recipe> {
         return api.getRecipesByMethodId(id)
     }
 
-    override suspend fun getRecipeById(id: String): Recipe? {
+    override suspend fun getRecipeById(id: Int): Recipe? {
         return api.getRecipeById(id)
     }
 }

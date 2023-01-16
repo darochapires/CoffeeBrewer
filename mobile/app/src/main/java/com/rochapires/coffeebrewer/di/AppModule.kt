@@ -73,8 +73,8 @@ object AppModule {
             deleteRecipeUseCase = DeleteRecipeUseCase(recipeRepository),
             saveDefaultMethodUseCase = SaveDefaultMethodUseCase(userPreferencesRepository),
             getDefaultMethodUseCase = GetDefaultMethodUseCase(userPreferencesRepository),
-            saveDefaultRecipeUseCase = SaveDefaultRecipeUseCase(userPreferencesRepository),
-            getDefaultRecipeUseCase = GetDefaultRecipeUseCase(userPreferencesRepository),
+            //saveDefaultRecipeUseCase = SaveDefaultRecipeUseCase(userPreferencesRepository),
+            //getDefaultRecipeUseCase = GetDefaultRecipeUseCase(userPreferencesRepository),
             saveDefaultCoffeeQuantityUseCase = SaveDefaultCoffeeQuantityUseCase(userPreferencesRepository),
             getDefaultCoffeeQuantityUseCase = GetDefaultCoffeeQuantityUseCase(userPreferencesRepository)
         )

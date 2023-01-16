@@ -48,9 +48,23 @@ class MethodsViewModel @Inject constructor(
         when (event) {
             is MethodsEvent.ItemSelected -> {
                 viewModelScope.launch {
-                    recipesUseCase.saveDefaultMethodUseCase(event.method.id)
+                    if(event.isLanding) {
+                        recipesUseCase.saveDefaultMethodUseCase(event.method.id)
+                    }
+                    else {
+
+                    }
                 }
             }
         }
     }
+
+    fun getSelectedMethodId(): Int? {
+        var methodId: Int? = null
+        viewModelScope.launch {
+            methodId = recipesUseCase.getDefaultMethodUseCase()
+        }
+        return methodId
+    }
+
 }

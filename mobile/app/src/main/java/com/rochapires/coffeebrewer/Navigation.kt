@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rochapires.coffeebrewer.features.common.Screen
-import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.PagerScreen
+import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.pager.PagerScreen
 
 @Composable
 fun Navigation() {

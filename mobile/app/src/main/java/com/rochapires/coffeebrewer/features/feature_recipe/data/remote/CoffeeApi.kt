@@ -7,15 +7,15 @@ import retrofit2.http.Path
 
 interface CoffeeApi {
 
-    @GET("/methods.json")
+    @GET("/methods")
     suspend fun getMethods(): List<Method>
 
-    @GET("/methods/{id}.json")
-    suspend fun getMethodById(@Path("id")id: String): Method?
+    @GET("/methods/{id}")
+    suspend fun getMethodById(@Path("id")id: Int): Method?
 
-    @GET("/recipes/{methodId}.json")
-    suspend fun getRecipesByMethodId(@Path("methodId")methodId: String): List<Recipe>
+    @GET("/recipes/GetByMethod/{methodId}")
+    suspend fun getRecipesByMethodId(@Path("methodId")methodId: Int): List<Recipe>
 
-    @GET("/recipes/{id}.json")
-    suspend fun getRecipeById(@Path("id")id: String): Recipe?
+    @GET("/recipes/{id}")
+    suspend fun getRecipeById(@Path("id")id: Int): Recipe?
 }

@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Method(
     @PrimaryKey
-    val id: String,
+    val id: Int,
     val name: String,
-    val description: String,
-    //val recipes: List<Recipe>
+    val description: String
 )

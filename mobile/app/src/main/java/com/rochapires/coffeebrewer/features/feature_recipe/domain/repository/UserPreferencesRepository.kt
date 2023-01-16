@@ -1,12 +1,12 @@
 package com.rochapires.coffeebrewer.features.feature_recipe.domain.repository
 
 interface UserPreferencesRepository {
-    suspend fun getDefaultMethod(): String?
-    suspend fun setDefaultMethod(methodId: String)
+    suspend fun getDefaultMethod(): Int?
+    suspend fun setDefaultMethod(methodId: Int)
 
-    suspend fun getDefaultRecipe(): String?
-    suspend fun setDefaultRecipe(recipeId: String)
+    /*suspend fun getDefaultRecipe(): Int?
+    suspend fun setDefaultRecipe(recipeId: Int)*/
 
-    suspend fun getDefaultCoffeeQuantity(): Int?
-    suspend fun setDefaultCoffeeQuantity(coffeeQuantity: Int)
+    suspend fun getDefaultCoffeeQuantity(): Double?
+    suspend fun setDefaultCoffeeQuantity(coffeeQuantity: Double)
 }

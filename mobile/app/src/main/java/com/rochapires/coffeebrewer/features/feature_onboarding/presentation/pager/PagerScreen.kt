@@ -1,4 +1,4 @@
-package com.rochapires.coffeebrewer.features.feature_onboarding.presentation
+package com.rochapires.coffeebrewer.features.feature_onboarding.presentation.pager
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -9,20 +9,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.rochapires.coffeebrewer.features.feature_onboarding.data.OnboardingData
+import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.HelloLandingScreen
+import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.coffee_quantity.CoffeeQuantityScreen
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.components.PagerIndicator
 import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.MethodsScreen
-import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipes.RecipesScreen
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun PagerScreen(navController: NavController) {
+fun PagerScreen(
+    navController: NavController,
+    viewModel: PagerViewModel = hiltViewModel()
+) {
     val pagerState = rememberPagerState()
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Column(
@@ -41,21 +45,24 @@ fun PagerScreen(navController: NavController) {
                     currentPage = pagerState.currentPage
                 )
             }
-            HorizontalPager(count = 4, state = pagerState) { page ->
+            HorizontalPager(
+                count = OnboardingData.onboardingItems.count(),
+                state = pagerState,
+            ) { page ->
                 when (page) {
-                    0, 2 -> {
+                    0 -> {
                         HelloLandingScreen()
                     }
                     1 -> {
-                        MethodsScreen()
+                        MethodsScreen(isLanding = true)
                     }
-                    3 -> {
-                        RecipesScreen()
+                    2 -> {
+                        CoffeeQuantityScreen()
                     }
                 }
             }
         }
-        if(pagerState.currentPage != 3) {
+        if(pagerState.currentPage != 4) {
             Button(
                 modifier = Modifier
                     .padding(16.dp)

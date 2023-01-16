@@ -10,6 +10,8 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -21,16 +23,21 @@ import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.
 fun MethodsScreen(
     //navController: NavController,
     viewModel: MethodsViewModel = hiltViewModel(),
+    isLanding: Boolean = false
 ) {
     val state = viewModel.state.value
-    
     Box(modifier = Modifier.fillMaxSize()) {
+        var selectedItem = remember { mutableStateOf(viewModel.getSelectedMethodId()) }
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state.methods) { method ->
                 MethodItem(
                     method = method,
+                    selected = isLanding && selectedItem?.value == method.id,
                     onItemClick = {
-                        viewModel.onEvent(MethodsEvent.ItemSelected(method))
+                        viewModel.onEvent(MethodsEvent.ItemSelected(method, isLanding))
+                        if(isLanding) {
+                            selectedItem.value = method.id
+                        }
                     }
                 )
             }

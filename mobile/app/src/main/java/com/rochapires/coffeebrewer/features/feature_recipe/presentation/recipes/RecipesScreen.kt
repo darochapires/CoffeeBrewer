@@ -30,7 +30,7 @@ fun RecipesScreen(
                 RecipeItem(
                     recipe = recipe,
                     onItemClick = {
-                        //navController.navigate()
+                        viewModel.onEvent(RecipesEvent.ItemSelected(recipe))
                     }
                 )
             }

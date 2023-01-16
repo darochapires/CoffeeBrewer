@@ -13,7 +13,7 @@ class GetRecipesByMethodIdUseCase(
 ) {
 
     operator fun invoke(
-        methodId: String,
+        methodId: Int,
         //recipeOrder: RecipeOrder = RecipeOrder.Name(OrderType.Ascending)
     ): Flow<Resource<List<Recipe>>> = flow {
         try {

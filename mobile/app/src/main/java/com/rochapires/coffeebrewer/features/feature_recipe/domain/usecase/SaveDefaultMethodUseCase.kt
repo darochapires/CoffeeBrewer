@@ -5,7 +5,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.Use
 class SaveDefaultMethodUseCase(
     private val repository: UserPreferencesRepository
 ) {
-    suspend operator fun invoke(methodId: String)  {
+    suspend operator fun invoke(methodId: Int)  {
         repository.setDefaultMethod(methodId = methodId)
     }
 }

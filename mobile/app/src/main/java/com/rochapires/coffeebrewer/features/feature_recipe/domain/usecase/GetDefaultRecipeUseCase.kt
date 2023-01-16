@@ -1,4 +1,4 @@
-package com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase
+/*package com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase
 
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.UserPreferencesRepository
 
@@ -8,4 +8,4 @@ class GetDefaultRecipeUseCase(
     suspend operator fun invoke()  {
         repository.getDefaultRecipe()
     }
-}
+}*/

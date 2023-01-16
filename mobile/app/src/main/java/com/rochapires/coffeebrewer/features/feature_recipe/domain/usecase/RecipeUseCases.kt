@@ -9,8 +9,8 @@ data class RecipeUseCases (
     val deleteRecipeUseCase: DeleteRecipeUseCase,
     val saveDefaultMethodUseCase: SaveDefaultMethodUseCase,
     val getDefaultMethodUseCase: GetDefaultMethodUseCase,
-    val saveDefaultRecipeUseCase: SaveDefaultRecipeUseCase,
-    val getDefaultRecipeUseCase: GetDefaultRecipeUseCase,
+    //val saveDefaultRecipeUseCase: SaveDefaultRecipeUseCase,
+    //val getDefaultRecipeUseCase: GetDefaultRecipeUseCase,
     val saveDefaultCoffeeQuantityUseCase: SaveDefaultCoffeeQuantityUseCase,
     val getDefaultCoffeeQuantityUseCase: GetDefaultCoffeeQuantityUseCase
 )
