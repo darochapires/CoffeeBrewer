@@ -18,7 +18,8 @@ class MethodsViewModel @Inject constructor(
 
     private val _state = mutableStateOf(MethodsState())
     val state: State<MethodsState> = _state
-    var selectedItem by mutableStateOf(getSelectedMethodId())
+
+    var defaultMethodId by mutableStateOf(fetchDefaultMethodId())
 
     init {
         getMethods()
@@ -50,7 +51,7 @@ class MethodsViewModel @Inject constructor(
                 viewModelScope.launch {
                     if(event.isLanding) {
                         recipesUseCase.saveDefaultMethodUseCase(event.method.id)
-                        selectedItem = event.method.id
+                        defaultMethodId = event.method.id
                     }
                     else {
 
@@ -60,7 +61,7 @@ class MethodsViewModel @Inject constructor(
         }
     }
 
-    private fun getSelectedMethodId(): Int? {
+    private fun fetchDefaultMethodId(): Int? {
         var methodId: Int? = null
         viewModelScope.launch {
             methodId = recipesUseCase.getDefaultMethodUseCase()

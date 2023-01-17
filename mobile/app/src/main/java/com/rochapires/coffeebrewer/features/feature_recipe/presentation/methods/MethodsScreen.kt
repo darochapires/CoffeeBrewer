@@ -29,7 +29,7 @@ fun MethodsScreen(
             items(state.methods) { method ->
                 MethodItem(
                     method = method,
-                    selected = isLanding && viewModel.selectedItem != null  && viewModel.selectedItem == method.id,
+                    selected = isLanding && viewModel.defaultMethodId != null  && viewModel.defaultMethodId == method.id,
                     onItemClick = {
                         viewModel.onEvent(MethodsEvent.ItemSelected(method, isLanding))
                     }

@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -18,14 +20,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.rochapires.coffeebrewer.util.Utils
 
 @Preview
 @Composable
 fun CoffeeQuantityScreen(
     viewModel: CoffeeQuantityViewModel = hiltViewModel(),
 ) {
-    Column(
-        modifier = Modifier
+    val state = viewModel.state.value
+
+    Column(modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
     ) {
@@ -39,15 +43,27 @@ fun CoffeeQuantityScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        var textState by remember { mutableStateOf("") }
+        var textState by remember { mutableStateOf(
+            if(state.coffeeQuantity != null)
+                state.coffeeQuantity.toString()
+            else ""
+        )}
         val focusManager = LocalFocusManager.current
+
         TextField(
             value = textState,
             modifier = Modifier
                 .background(color = Color.Transparent)
                 .fillMaxWidth(),
             onValueChange = { newText ->
-                textState = newText
+                if(Utils.isValidQuantity(newText) || newText.isEmpty()) {
+                    textState = newText
+                } else {
+                    val regex = """^(\d+(?:[\.\,])?)${'$'}""".toRegex()
+                    if (regex.matches(newText)) {
+                        textState = newText
+                    }
+                }
             },
             label = {
                 Text(text = "Coffee quantity")
@@ -59,14 +75,30 @@ fun CoffeeQuantityScreen(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    if(textState.isNotBlank()) {
-                        //TODO: disable done button until valid input
-                        viewModel.onEvent(CoffeeQuantityEvent.DoneInserting(textState.toDouble()))
-                        focusManager.clearFocus()
-                    }
+                    saveCoffeeQuantity(textState, viewModel, focusManager)
                 }
-            ),
-
+            )
         )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                saveCoffeeQuantity(textState, viewModel, focusManager)
+                //TODO
+            }
+        ) {
+            Text(text = "Get Started")
+        }
+    }
+}
+
+private fun saveCoffeeQuantity(coffeeQuantity: String,  viewModel: CoffeeQuantityViewModel, focusManager: FocusManager) {
+    if (Utils.isValidQuantity(coffeeQuantity)) {
+        viewModel.onEvent(CoffeeQuantityEvent.DoneInserting(coffeeQuantity.replace(',','.').toDouble()))
+        focusManager.clearFocus()
+    } else {
+        //TODO: show error
     }
 }

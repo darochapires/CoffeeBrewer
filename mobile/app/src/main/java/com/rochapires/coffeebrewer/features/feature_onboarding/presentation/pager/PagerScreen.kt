@@ -62,25 +62,16 @@ fun PagerScreen(
                 }
             }
         }
-        if(pagerState.currentPage != 4) {
+        if(pagerState.currentPage != 2) {
             Button(
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.BottomEnd),
-                onClick = { }
+                onClick = {
+                    //TODO
+                }
             ) {
                 Text(text = "Skip")
-            }
-        }
-        else {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .align(Alignment.BottomCenter),
-                onClick = { }
-            ) {
-                Text(text = "Get Started")
             }
         }
     }

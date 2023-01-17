@@ -1,5 +1,7 @@
 package com.rochapires.coffeebrewer.features.feature_onboarding.presentation.coffee_quantity
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,21 +17,17 @@ class CoffeeQuantityViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    fun hasDefaultCoffeeQuantity() : Boolean {
-        var coffeeQuantity = savedStateHandle.get<Double>(Constants.DEFAULT_COFFEE_QUANTITY_KEY)
-        if(coffeeQuantity == null) {
-            viewModelScope.launch {
-                coffeeQuantity = recipesUseCase.getDefaultCoffeeQuantityUseCase()
-            }
-        }
-        return  coffeeQuantity != null
-    }
+    private val _state = mutableStateOf(CoffeeQuantityState())
+    val state: State<CoffeeQuantityState> = _state
 
     fun onEvent(event: CoffeeQuantityEvent) {
         when (event) {
             is CoffeeQuantityEvent.DoneInserting -> {
                 viewModelScope.launch {
                     recipesUseCase.saveDefaultCoffeeQuantityUseCase(event.quantity)
+                    _state.value = CoffeeQuantityState(
+                        coffeeQuantity = event.quantity
+                    )
                 }
             }
         }
