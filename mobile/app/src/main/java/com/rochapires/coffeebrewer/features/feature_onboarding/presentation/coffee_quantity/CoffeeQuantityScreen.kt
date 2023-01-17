@@ -7,9 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -41,15 +39,15 @@ fun CoffeeQuantityScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        var textState = remember { mutableStateOf("") }
+        var textState by remember { mutableStateOf("") }
         val focusManager = LocalFocusManager.current
         TextField(
-            value = textState.value,
+            value = textState,
             modifier = Modifier
                 .background(color = Color.Transparent)
                 .fillMaxWidth(),
             onValueChange = { newText ->
-                textState.value = newText
+                textState = newText
             },
             label = {
                 Text(text = "Coffee quantity")
@@ -61,9 +59,9 @@ fun CoffeeQuantityScreen(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    if(textState.value.isNotBlank()) {
+                    if(textState.isNotBlank()) {
                         //TODO: disable done button until valid input
-                        viewModel.onEvent(CoffeeQuantityEvent.DoneInserting(textState.value.toDouble()))
+                        viewModel.onEvent(CoffeeQuantityEvent.DoneInserting(textState.toDouble()))
                         focusManager.clearFocus()
                     }
                 }

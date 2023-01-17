@@ -1,7 +1,6 @@
 package com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rochapires.coffeebrewer.features.common.Resource
@@ -19,6 +18,7 @@ class MethodsViewModel @Inject constructor(
 
     private val _state = mutableStateOf(MethodsState())
     val state: State<MethodsState> = _state
+    var selectedItem by mutableStateOf(getSelectedMethodId())
 
     init {
         getMethods()
@@ -50,6 +50,7 @@ class MethodsViewModel @Inject constructor(
                 viewModelScope.launch {
                     if(event.isLanding) {
                         recipesUseCase.saveDefaultMethodUseCase(event.method.id)
+                        selectedItem = event.method.id
                     }
                     else {
 
@@ -59,7 +60,7 @@ class MethodsViewModel @Inject constructor(
         }
     }
 
-    fun getSelectedMethodId(): Int? {
+    private fun getSelectedMethodId(): Int? {
         var methodId: Int? = null
         viewModelScope.launch {
             methodId = recipesUseCase.getDefaultMethodUseCase()
