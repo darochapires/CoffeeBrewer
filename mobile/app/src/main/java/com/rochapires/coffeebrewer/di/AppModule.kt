@@ -1,9 +1,6 @@
 package com.rochapires.coffeebrewer.di
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.rochapires.coffeebrewer.features.common.Constants
 import com.rochapires.coffeebrewer.features.feature_recipe.data.remote.CoffeeApi
 import com.rochapires.coffeebrewer.features.feature_recipe.data.repository.RecipeRepositoryImpl
@@ -11,6 +8,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.data.repository.UserP
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.RecipeRepository
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.UserPreferencesRepository
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.*
+import com.rochapires.coffeebrewer.features.feature_onboarding.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,22 +21,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-//    @Provides
-//    @Singleton
-//    fun provideRecipeDatabase(app: Application): CoffeeDatabase {
-//        return Room.databaseBuilder(
-//            app,
-//            CoffeeDatabase::class.java,
-//            CoffeeDatabase.DATABASE_NAME
-//        ).build()
-//    }
-
-//    @Provides
-//    @Singleton
-//    fun provideMethodRepository(db: CoffeeDatabase): MethodRepository {
-//        return MethodRepositoryImpl(db.methodDao)
-//    }
 
     @Provides
     @Singleton
@@ -73,10 +55,19 @@ object AppModule {
             deleteRecipeUseCase = DeleteRecipeUseCase(recipeRepository),
             saveDefaultMethodUseCase = SaveDefaultMethodUseCase(userPreferencesRepository),
             getDefaultMethodUseCase = GetDefaultMethodUseCase(userPreferencesRepository),
-            //saveDefaultRecipeUseCase = SaveDefaultRecipeUseCase(userPreferencesRepository),
-            //getDefaultRecipeUseCase = GetDefaultRecipeUseCase(userPreferencesRepository),
+            saveDefaultRecipeUseCase = SaveDefaultRecipeUseCase(userPreferencesRepository),
+            getDefaultRecipeUseCase = GetDefaultRecipeUseCase(userPreferencesRepository),
             saveDefaultCoffeeQuantityUseCase = SaveDefaultCoffeeQuantityUseCase(userPreferencesRepository),
             getDefaultCoffeeQuantityUseCase = GetDefaultCoffeeQuantityUseCase(userPreferencesRepository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideOnboardingUseCase(userPreferencesRepository: UserPreferencesRepository): OnboardingUseCases {
+        return OnboardingUseCases(
+            saveOnboardingDoneUseCase = SaveOnboardingDoneUseCase(userPreferencesRepository),
+            getOnboardingDoneUseCase = GetOnboardingDoneUseCase(userPreferencesRepository)
         )
     }
 }

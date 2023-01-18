@@ -8,6 +8,7 @@ object Constants {
     //Data Store
     const val USER_PREFERENCES_NAME = "user_preferences"
     const val DEFAULT_METHOD_KEY = "default_method_key"
-    //const val DEFAULT_RECIPE_KEY = "default_recipe_key"
+    const val DEFAULT_RECIPE_KEY = "default_recipe_key"
     const val DEFAULT_COFFEE_QUANTITY_KEY = "default_coffee_quantity_key"
+    const val ONBOARDING_DONE_KEY = "onboarding_done_key"
 }

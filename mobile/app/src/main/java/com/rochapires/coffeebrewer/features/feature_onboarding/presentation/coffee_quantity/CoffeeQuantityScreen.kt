@@ -16,16 +16,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.rochapires.coffeebrewer.features.common.Screen
+import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.pager.PagerEvent
 import com.rochapires.coffeebrewer.util.Utils
 
-@Preview
 @Composable
 fun CoffeeQuantityScreen(
-    viewModel: CoffeeQuantityViewModel = hiltViewModel(),
+    navController: NavController,
+    viewModel: CoffeeQuantityViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
 
@@ -85,8 +87,11 @@ fun CoffeeQuantityScreen(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                saveCoffeeQuantity(textState, viewModel, focusManager)
-                //TODO
+                if(!textState.isEmpty()) {
+                    saveCoffeeQuantity(textState, viewModel, focusManager)
+                }
+                navController.navigate(Screen.HomeScreen.route)
+                viewModel.onEvent(CoffeeQuantityEvent.GetStartedButtonClicked())
             }
         ) {
             Text(text = "Get Started")

@@ -4,9 +4,12 @@ interface UserPreferencesRepository {
     suspend fun getDefaultMethod(): Int?
     suspend fun setDefaultMethod(methodId: Int)
 
-    /*suspend fun getDefaultRecipe(): Int?
-    suspend fun setDefaultRecipe(recipeId: Int)*/
+    suspend fun getDefaultRecipe(): Int?
+    suspend fun setDefaultRecipe(recipeId: Int)
 
     suspend fun getDefaultCoffeeQuantity(): Double?
     suspend fun setDefaultCoffeeQuantity(coffeeQuantity: Double)
+
+    suspend fun getOnboardingDone(): Boolean
+    suspend fun setOnboardingDone(done: Boolean)
 }

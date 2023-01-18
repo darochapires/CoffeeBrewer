@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rochapires.coffeebrewer.features.common.Constants
+import com.rochapires.coffeebrewer.features.feature_onboarding.domain.usecase.OnboardingUseCases
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.RecipeUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CoffeeQuantityViewModel @Inject constructor(
     private val recipesUseCase: RecipeUseCases,
+    private val onboardingUseCases: OnboardingUseCases,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -28,6 +30,11 @@ class CoffeeQuantityViewModel @Inject constructor(
                     _state.value = CoffeeQuantityState(
                         coffeeQuantity = event.quantity
                     )
+                }
+            }
+            is CoffeeQuantityEvent.GetStartedButtonClicked -> {
+                viewModelScope.launch {
+                    onboardingUseCases.saveOnboardingDoneUseCase(event.done)
                 }
             }
         }

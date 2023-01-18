@@ -22,15 +22,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Navigation()
-                    /*val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = Screen.MethodsScreen.route
-                    ) {
-                        composable(route = Screen.MethodsScreen.route) {
-                            MethodsScreen(navController)
-                        }
-                    }*/
                 }
             }
         }

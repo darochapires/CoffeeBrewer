@@ -2,10 +2,7 @@ package com.rochapires.coffeebrewer.features.feature_recipe.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.doublePreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.rochapires.coffeebrewer.features.common.Constants
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.UserPreferencesRepository
@@ -21,8 +18,9 @@ class UserPreferencesRepositoryImpl @Inject constructor(
 
     companion object {
         val defaultMethodKey = intPreferencesKey(Constants.DEFAULT_METHOD_KEY)
-        //val defaultRecipeKey = intPreferencesKey(Constants.DEFAULT_RECIPE_KEY)
+        val defaultRecipeKey = intPreferencesKey(Constants.DEFAULT_RECIPE_KEY)
         val defaultCoffeeQuantityKey = doublePreferencesKey(Constants.DEFAULT_COFFEE_QUANTITY_KEY)
+        val onboardingDoneKey = booleanPreferencesKey(Constants.ONBOARDING_DONE_KEY)
     }
 
     override suspend fun getDefaultMethod(): Int? {
@@ -33,13 +31,13 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         save(defaultMethodKey, methodId)
     }
 
-    /*override suspend fun getDefaultRecipe(): Int? {
+    override suspend fun getDefaultRecipe(): Int? {
         return read(defaultRecipeKey)
     }
 
     override suspend fun setDefaultRecipe(recipeId: Int) {
         save(defaultRecipeKey, recipeId)
-    }*/
+    }
 
     override suspend fun getDefaultCoffeeQuantity(): Double? {
         return read(defaultCoffeeQuantityKey)
@@ -47,6 +45,14 @@ class UserPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun setDefaultCoffeeQuantity(coffeeQuantity: Double) {
         save(defaultCoffeeQuantityKey, coffeeQuantity)
+    }
+
+    override suspend fun getOnboardingDone(): Boolean {
+        return read(onboardingDoneKey) ?: false
+    }
+
+    override suspend fun setOnboardingDone(done: Boolean) {
+        save(onboardingDoneKey, done)
     }
 
     private suspend fun <T> read(key: Preferences.Key<T>): T? {

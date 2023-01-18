@@ -14,8 +14,10 @@ import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.rochapires.coffeebrewer.features.common.Screen
 import com.rochapires.coffeebrewer.features.feature_onboarding.data.OnboardingData
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.HelloLandingScreen
+import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.coffee_quantity.CoffeeQuantityEvent
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.coffee_quantity.CoffeeQuantityScreen
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.components.PagerIndicator
 import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.MethodsScreen
@@ -57,7 +59,7 @@ fun PagerScreen(
                         MethodsScreen(isLanding = true)
                     }
                     2 -> {
-                        CoffeeQuantityScreen()
+                        CoffeeQuantityScreen(navController)
                     }
                 }
             }
@@ -68,7 +70,8 @@ fun PagerScreen(
                     .padding(16.dp)
                     .align(Alignment.BottomEnd),
                 onClick = {
-                    //TODO
+                    navController.navigate(Screen.HomeScreen.route)
+                    viewModel.onEvent(PagerEvent.SkipButtonClicked())
                 }
             ) {
                 Text(text = "Skip")
