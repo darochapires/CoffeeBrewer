@@ -54,7 +54,7 @@ class MethodsViewModel @Inject constructor(
                         defaultMethodId = event.method.id
                     }
                     else {
-
+                        //TODO navigate
                     }
                 }
             }

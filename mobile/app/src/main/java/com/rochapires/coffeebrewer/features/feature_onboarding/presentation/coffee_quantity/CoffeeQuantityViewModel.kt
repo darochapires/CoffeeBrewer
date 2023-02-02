@@ -2,10 +2,8 @@ package com.rochapires.coffeebrewer.features.feature_onboarding.presentation.cof
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rochapires.coffeebrewer.features.common.Constants
 import com.rochapires.coffeebrewer.features.feature_onboarding.domain.usecase.OnboardingUseCases
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.RecipeUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,10 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CoffeeQuantityViewModel @Inject constructor(
     private val recipesUseCase: RecipeUseCases,
-    private val onboardingUseCases: OnboardingUseCases,
-    private val savedStateHandle: SavedStateHandle
+    private val onboardingUseCases: OnboardingUseCases
 ) : ViewModel() {
-
     private val _state = mutableStateOf(CoffeeQuantityState())
     val state: State<CoffeeQuantityState> = _state
 

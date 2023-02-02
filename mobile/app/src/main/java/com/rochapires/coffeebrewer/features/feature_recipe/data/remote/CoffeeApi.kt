@@ -2,6 +2,7 @@ package com.rochapires.coffeebrewer.features.feature_recipe.data.remote
 
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Method
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Recipe
+import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Step
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -17,5 +18,8 @@ interface CoffeeApi {
     suspend fun getRecipesByMethodId(@Path("methodId")methodId: Int): List<Recipe>
 
     @GET("/recipes/{id}")
-    suspend fun getRecipeById(@Path("id")id: Int): Recipe?
+    suspend fun getRecipeById(@Path("id")id: Int): Recipe
+
+    @GET("/steps/GetByRecipe/{recipeId}")
+    suspend fun getStepsByRecipeId(@Path("recipeId")recipeId: Int): List<Step>
 }

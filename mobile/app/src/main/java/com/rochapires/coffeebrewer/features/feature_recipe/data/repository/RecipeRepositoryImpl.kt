@@ -3,6 +3,7 @@ package com.rochapires.coffeebrewer.features.feature_recipe.data.repository
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Method
 import com.rochapires.coffeebrewer.features.feature_recipe.data.remote.CoffeeApi
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Recipe
+import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Step
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.RecipeRepository
 
 class RecipeRepositoryImpl(
@@ -29,7 +30,11 @@ class RecipeRepositoryImpl(
         return api.getRecipesByMethodId(id)
     }
 
-    override suspend fun getRecipeById(id: Int): Recipe? {
+    override suspend fun getRecipeById(id: Int): Recipe {
         return api.getRecipeById(id)
+    }
+
+    override suspend fun getStepsByRecipeId(id: Int): List<Step> {
+        return api.getStepsByRecipeId(id)
     }
 }

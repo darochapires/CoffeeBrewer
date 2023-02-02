@@ -1,7 +1,7 @@
-POST http://localhost:5002/methods
+POST https://coffeebrewer.azurewebsites.net/methods
 Content-Type: application/json
 
 {
-    "name": "Kalita",
-    "description": "Kalita description"
+    "name": "Percolator",
+    "description": "Percolator description"
 }

@@ -17,26 +17,26 @@ class UserPreferencesRepositoryImpl @Inject constructor(
 
 
     companion object {
-        val defaultMethodKey = intPreferencesKey(Constants.DEFAULT_METHOD_KEY)
-        val defaultRecipeKey = intPreferencesKey(Constants.DEFAULT_RECIPE_KEY)
+        val methodIdKey = intPreferencesKey(Constants.METHOD_ID_KEY)
+        val recipeIdKey = intPreferencesKey(Constants.RECIPE_ID_KEY)
         val defaultCoffeeQuantityKey = doublePreferencesKey(Constants.DEFAULT_COFFEE_QUANTITY_KEY)
         val onboardingDoneKey = booleanPreferencesKey(Constants.ONBOARDING_DONE_KEY)
     }
 
     override suspend fun getDefaultMethod(): Int? {
-        return read(defaultMethodKey)
+        return read(methodIdKey)
     }
 
     override suspend fun setDefaultMethod(methodId: Int) {
-        save(defaultMethodKey, methodId)
+        save(methodIdKey, methodId)
     }
 
     override suspend fun getDefaultRecipe(): Int? {
-        return read(defaultRecipeKey)
+        return read(recipeIdKey)
     }
 
     override suspend fun setDefaultRecipe(recipeId: Int) {
-        save(defaultRecipeKey, recipeId)
+        save(recipeIdKey, recipeId)
     }
 
     override suspend fun getDefaultCoffeeQuantity(): Double? {

@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.rochapires.coffeebrewer.features.common.Screen
-import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.pager.PagerEvent
-import com.rochapires.coffeebrewer.util.Utils
+import com.rochapires.coffeebrewer.util.Utils.isValidQuantity
 
 @Composable
 fun CoffeeQuantityScreen(
@@ -58,7 +57,7 @@ fun CoffeeQuantityScreen(
                 .background(color = Color.Transparent)
                 .fillMaxWidth(),
             onValueChange = { newText ->
-                if(Utils.isValidQuantity(newText) || newText.isEmpty()) {
+                if(newText.isValidQuantity() || newText.isEmpty()) {
                     textState = newText
                 } else {
                     val regex = """^(\d+(?:[\.\,])?)${'$'}""".toRegex()
@@ -99,8 +98,12 @@ fun CoffeeQuantityScreen(
     }
 }
 
-private fun saveCoffeeQuantity(coffeeQuantity: String,  viewModel: CoffeeQuantityViewModel, focusManager: FocusManager) {
-    if (Utils.isValidQuantity(coffeeQuantity)) {
+private fun saveCoffeeQuantity(
+    coffeeQuantity: String,
+    viewModel: CoffeeQuantityViewModel,
+    focusManager: FocusManager
+) {
+    if (coffeeQuantity.isValidQuantity()) {
         viewModel.onEvent(CoffeeQuantityEvent.DoneInserting(coffeeQuantity.replace(',','.').toDouble()))
         focusManager.clearFocus()
     } else {

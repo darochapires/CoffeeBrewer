@@ -1,12 +1,14 @@
-@id=1
+@id=3
 
-PUT  http://localhost:5002/steps/{{id}}
+PUT  https://coffeebrewer.azurewebsites.net/steps/{{id}}
 Content-Type: application/json
 
 {
-    "order": 0,
-    "stepType": 0,
-    "title": "Make a hole",
-    "description": "Make a hole in the middle of the coffee bed with a fine straw",
-    "durationInSeconds": 30
+    "order": 3,
+    "stepType": 1,
+    "title": "Pour Water",
+    "description": "Pour 40 g of water slowly in a circular motion",
+    "durationInSeconds": 7,
+    "recipeId": 1,
+    "waterAmount": 40
 }

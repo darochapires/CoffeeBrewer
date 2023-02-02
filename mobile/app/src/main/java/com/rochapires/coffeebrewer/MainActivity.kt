@@ -7,8 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import com.rochapires.coffeebrewer.di.AppModule
+import com.rochapires.coffeebrewer.navigation.RootNavigation
 import com.rochapires.coffeebrewer.ui.theme.CoffeeBrewerTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -21,7 +26,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Navigation()
+                    //TODO find a better way to fetch onboardingDone
+                    var onboardingDone: Boolean
+                    runBlocking {
+                        withContext(Dispatchers.IO) {
+                            val onboardingUseCases = AppModule.provideOnboardingUseCase(AppModule.provideUserPreferencesRepository(this@MainActivity))
+                            onboardingDone = onboardingUseCases.getOnboardingDoneUseCase()
+                        }
+                    }
+                    RootNavigation(onboardingDone)
                 }
             }
         }

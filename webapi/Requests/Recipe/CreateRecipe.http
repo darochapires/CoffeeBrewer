@@ -1,9 +1,9 @@
-POST http://localhost:5002/recipes
+POST https://coffeebrewer.azurewebsites.net/recipes
 Content-Type: application/json
 
 {
-    "name": "Kasuya's V60",
-    "description": "Kasuya's V60 description",
+    "name": "Oh Menina's V60",
+    "description": "Oh Menina's V60 description",
     "coffeeAmount": 15,
     "waterTemperature": 94,
     "methodId": 1,

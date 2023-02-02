@@ -11,9 +11,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Recipe
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.RecipeUseCases
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.util.OrderType
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.util.RecipeOrder
-import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.MethodsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -32,8 +30,11 @@ class RecipesViewModel @Inject constructor(
 
     //private var getRecipesJob: Job? = null
 
+    private var methodName: String
+
     init {
-        var methodId = savedStateHandle.get<Int>(Constants.DEFAULT_METHOD_KEY)
+        methodName = savedStateHandle.get<String>(Constants.METHOD_NAME_KEY) ?: ""
+        var methodId = savedStateHandle.get<String>(Constants.METHOD_ID_KEY)?.toInt()
         if(methodId == null) {
             viewModelScope.launch {
                 methodId = recipesUseCase.getDefaultMethodUseCase()
@@ -52,7 +53,6 @@ class RecipesViewModel @Inject constructor(
                 ) {
                     return
                 }
-
             }
             is RecipesEvent.DeleteRecipe -> {
                 viewModelScope.launch {
@@ -77,33 +77,26 @@ class RecipesViewModel @Inject constructor(
         }
     }
 
-//    private fun getRecipes(recipeOrder: RecipeOrder) {
-//        getRecipesJob?.cancel()
-//        getRecipesJob = recipesUseCase.getRecipesUseCase(recipeOrder)
-//            .onEach { recipes ->
-//                _state.value = state.value.copy(
-//                    recipes = recipes,
-//                    recipeOrder = recipeOrder
-//                )
-//            }
-//            .launchIn(viewModelScope)
-//    }
-
     private fun getRecipes(methodId: Int, recipeOrder: RecipeOrder) {
-        recipesUseCase.getRecipesByMethodIdUseCase(methodId).onEach { recipes ->
-            when (recipes) {
+        recipesUseCase.getRecipesByMethodIdUseCase(methodId).onEach { result ->
+            when (result) {
                 is Resource.Success -> {
                     _state.value = RecipesState(
-                        recipes = recipes.data ?: emptyList()
+                        methodName = methodName,
+                        recipes = result.data ?: emptyList()
                     )
                 }
                 is Resource.Error -> {
                     _state.value = RecipesState(
-                        error = recipes.message ?: "An unexpected error occurred"
+                        methodName = methodName,
+                        error = result.message ?: "An unexpected error occurred"
                     )
                 }
                 is Resource.Loading -> {
-                    _state.value = RecipesState(isLoading = true)
+                    _state.value = RecipesState(
+                        methodName = methodName,
+                        isLoading = true
+                    )
                 }
             }
         }.launchIn(viewModelScope)

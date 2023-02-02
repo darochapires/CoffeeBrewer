@@ -17,7 +17,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.rochapires.coffeebrewer.features.common.Screen
 import com.rochapires.coffeebrewer.features.feature_onboarding.data.OnboardingData
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.HelloLandingScreen
-import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.coffee_quantity.CoffeeQuantityEvent
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.coffee_quantity.CoffeeQuantityScreen
 import com.rochapires.coffeebrewer.features.feature_onboarding.presentation.components.PagerIndicator
 import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.MethodsScreen
@@ -56,7 +55,7 @@ fun PagerScreen(
                         HelloLandingScreen()
                     }
                     1 -> {
-                        MethodsScreen(isLanding = true)
+                        MethodsScreen(navController, isLanding = true)
                     }
                     2 -> {
                         CoffeeQuantityScreen(navController)

@@ -13,8 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HelloLandingScreen(
-) {
+fun HelloLandingScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()

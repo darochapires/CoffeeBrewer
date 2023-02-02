@@ -6,5 +6,6 @@ public enum StepType
     Pour,
     Wait,
     Stir,
-    Swirl
+    Swirl,
+    Bloom
 }

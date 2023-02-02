@@ -1,12 +1,12 @@
-POST http://localhost:5002/steps
+POST https://coffeebrewer.azurewebsites.net/steps
 Content-Type: application/json
 
 {
-    "order": 2,
+    "order": 1,
     "stepType": 1,
-    "title": "Pour water",
-    "description": "Pour 40 gr of water slowly in a circular motion",
-    "durationInSeconds": 25,
+    "title": "Bloom",
+    "description": "Pour 26 g of water slowly in a circular motion",
+    "durationInSeconds": 7,
     "recipeId": 1,
     "waterAmount": 40
 }

@@ -6,6 +6,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.domain.util.RecipeOrd
 
 data class RecipesState (
     val isLoading: Boolean = false,
+    val methodName: String = "",
     val recipes: List<Recipe> = emptyList(),
     val recipeOrder: RecipeOrder = RecipeOrder.Date(OrderType.Descending),
     val isOrderSectionVisible: Boolean = false,

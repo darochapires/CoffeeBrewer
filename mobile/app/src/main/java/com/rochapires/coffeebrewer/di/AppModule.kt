@@ -53,6 +53,8 @@ object AppModule {
             getRecipeUseCase = GetRecipeUseCase(recipeRepository),
             addRecipeUseCase = AddRecipeUseCase(recipeRepository),
             deleteRecipeUseCase = DeleteRecipeUseCase(recipeRepository),
+            getStepsByRecipeIdUseCase = GetStepsByRecipeIdUseCase(recipeRepository),
+            //defaults
             saveDefaultMethodUseCase = SaveDefaultMethodUseCase(userPreferencesRepository),
             getDefaultMethodUseCase = GetDefaultMethodUseCase(userPreferencesRepository),
             saveDefaultRecipeUseCase = SaveDefaultRecipeUseCase(userPreferencesRepository),

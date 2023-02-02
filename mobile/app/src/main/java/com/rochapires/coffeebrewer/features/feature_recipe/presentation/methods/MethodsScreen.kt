@@ -15,11 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.rochapires.coffeebrewer.features.common.Screen
 import com.rochapires.coffeebrewer.features.feature_recipe.presentation.methods.components.MethodItem
 
 @Composable
 fun MethodsScreen(
-    //navController: NavController,
+    navController: NavController,
     viewModel: MethodsViewModel = hiltViewModel(),
     isLanding: Boolean = false
 ) {
@@ -31,7 +33,8 @@ fun MethodsScreen(
                     method = method,
                     selected = isLanding && viewModel.defaultMethodId != null  && viewModel.defaultMethodId == method.id,
                     onItemClick = {
-                        viewModel.onEvent(MethodsEvent.ItemSelected(method, isLanding))
+                        //viewModel.onEvent(MethodsEvent.ItemSelected(method, isLanding))
+                        navController.navigate(Screen.RecipesScreen.route + "/${method.id}/${method.name}")
                     }
                 )
             }
