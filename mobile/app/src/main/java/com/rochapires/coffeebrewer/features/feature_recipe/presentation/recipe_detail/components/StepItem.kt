@@ -19,6 +19,7 @@ import com.rochapires.coffeebrewer.util.Utils.formatDuration
 @Composable
 fun StepItem(
     step: Step,
+    selected: Boolean,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -26,6 +27,7 @@ fun StepItem(
             .fillMaxWidth()
             .padding(5.dp),
         shape = RoundedCornerShape(12.dp),
+        backgroundColor = if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.surface,
         elevation = 5.dp
     ) {
         Column(
@@ -82,15 +84,17 @@ fun StepItem(
 
 @Preview
 @Composable
-fun RecipeItemPreview(){
-    StepItem(step = Step(
-        id = 1,
-        order = 1,
-        stepType = StepType.Pour,
-        title = "Pour Water",
-        description = "Pour 26 g of water slowly in a circular motion",
-        durationInSeconds = 9,
-        recipeId = 1,
-        waterAmount = 40
-    ))
+fun StepItemPreview(){
+    StepItem(
+        step = Step(
+            id = 1,
+            order = 1,
+            stepType = StepType.Pour,
+            title = "Pour Water",
+            description = "Pour 26 g of water slowly in a circular motion",
+            durationInSeconds = 9,
+            recipeId = 1,
+            waterAmount = 40
+        ), selected = false
+    )
 }

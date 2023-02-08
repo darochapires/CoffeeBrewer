@@ -11,6 +11,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.domain.usecase.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -83,20 +84,14 @@ class RecipeDetailViewModel @Inject constructor(
                     brewTimerTotalTime = step.durationInSeconds,
                     currentStepIndex = 0
                 )
-                /*viewModelScope.launch {
-                    for (step in _state.value.steps) {
-                        _state.value = _state.value.copy(
-                            brewTimerTotalTime = step.durationInSeconds,
-                            currentStepId = step.id
-                        )
-                        delay(step.durationInSeconds * 1000L)
-                    }
-                }*/
             }
             is RecipeDetailEvent.StepFinished -> {
                 if(_state.value.currentStepIndex == _state.value.steps.size - 1) {
                     //brew finished
                     //TODO brew finished
+                    _state.value = _state.value.copy(
+                        brewTimerIsRunning = false
+                    )
                     return
                 }
                 val currentStepIndex = _state.value.currentStepIndex + 1
@@ -105,6 +100,11 @@ class RecipeDetailViewModel @Inject constructor(
                     brewTimerTotalTime = step.durationInSeconds,
                     currentStepIndex = currentStepIndex
                 )
+            }
+            is RecipeDetailEvent.SetAsDefaultPressed -> {
+                viewModelScope.launch {
+                    recipesUseCase.saveDefaultRecipeUseCase(event.recipeId)
+                }
             }
         }
     }

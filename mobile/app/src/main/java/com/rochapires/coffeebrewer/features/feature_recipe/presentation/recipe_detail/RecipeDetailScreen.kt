@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -30,6 +31,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipe_d
 import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipes.components.RecipeItem
 import com.rochapires.coffeebrewer.util.Utils.formatDuration
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -40,6 +42,7 @@ fun RecipeDetailScreen(
     val state = viewModel.state.value
     val lazyListState = rememberLazyListState()
     val scaffoldState = rememberScaffoldState()
+    val composableScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -54,6 +57,12 @@ fun RecipeDetailScreen(
             FloatingActionButton(
                 onClick = {
                     viewModel.onEvent(RecipeDetailEvent.StartRecipePressed)
+                    composableScope.launch {
+                        lazyListState.scrollToItem(
+                            index = viewModel.state.value.currentStepIndex,
+                            scrollOffset = 0
+                        )
+                    }
                 },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
@@ -63,15 +72,21 @@ fun RecipeDetailScreen(
         scaffoldState = scaffoldState
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            if (viewModel.state.value.brewTimerIsVisible) {
+            if (state.brewTimerIsVisible) {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     BrewTimer(
-                        totalTime = state.brewTimerTotalTime * 1000L,
+                        totalTime = viewModel.state.value.brewTimerTotalTime * 1000L,
                         stepFinished = {
                             viewModel.onEvent(RecipeDetailEvent.StepFinished)
+                            composableScope.launch {
+                                lazyListState.scrollToItem(
+                                    index = viewModel.state.value.currentStepIndex,
+                                    scrollOffset = 0
+                                )
+                            }
                         }
                     )
                 }
@@ -82,7 +97,7 @@ fun RecipeDetailScreen(
                 contentPadding = PaddingValues(bottom = 105.dp),
                 state = lazyListState
             ) {
-                if (!viewModel.state.value.brewTimerIsVisible) {
+                if (!state.brewTimerIsVisible) {
                     item {
                         if (state.recipe != null) {
                             RecipeItem(
@@ -92,9 +107,10 @@ fun RecipeDetailScreen(
                         }
                     }
                 }
-                items(state.steps) { step ->
+                itemsIndexed(state.steps) { index, step ->
                     StepItem(
-                        step = step
+                        step = step,
+                        selected = viewModel.state.value.currentStepIndex == index
                     )
                 }
             }
@@ -129,21 +145,37 @@ fun BrewTimer(
     totalTime: Long,
     stepFinished: () -> Unit,
     remainingTimeColor: Color = MaterialTheme.colors.primary,
-    passedTimeColor: Color = Color.Gray,
+    passedTimeColor: Color = Color.DarkGray,
     modifier: Modifier = Modifier.size(200.dp),
     strokeWidth: Dp = 5.dp
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     var value by remember { mutableStateOf(1f) }
     var currentTime by remember { mutableStateOf(totalTime) }
+    var currentTimeCircle by remember { mutableStateOf(totalTime) }
     var isTimerRunning by remember { mutableStateOf(false) }
+    var delayAggregate by remember { mutableStateOf(0L) }
+    var isNewStep by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = currentTime) {
-        delay(100L)
-        currentTime -= 100L
-        value = currentTime/totalTime.toFloat()
-        if(currentTime == 0L) {
+    if(isNewStep) {
+        currentTime = totalTime
+        currentTimeCircle = totalTime
+        isNewStep = false
+    }
+
+    LaunchedEffect(key1 = currentTimeCircle) {
+        if (currentTimeCircle > 0L) {
+            delay(100L)
+            currentTimeCircle -= 100L
+            value = currentTimeCircle / totalTime.toFloat()
+            delayAggregate += 100L
+            if(delayAggregate == 1000L) {
+                delayAggregate = 0
+                currentTime -= 1000L
+            }
+        } else {
             stepFinished()
+            isNewStep = true
         }
     }
 
@@ -180,8 +212,9 @@ fun BrewTimer(
 
 }
 
-/*@Preview
+/*
+@Preview
 @Composable
 fun BrewTimerPreview() {
-    BrewTimer(totalTime = 40L * 1000L)
+    BrewTimer(totalTime = 8L * 1000L, {})
 }*/

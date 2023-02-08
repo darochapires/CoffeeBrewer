@@ -19,7 +19,7 @@ fun HomeNavigation(navController: NavHostController) {
         startDestination = Screen.HomeScreen.route
     ) {
         composable(route = Screen.HomeScreen.route) {
-            HomeScreen()
+            HomeScreen(navController)
         }
         composable(route = Screen.MethodsScreen.route) {
             MethodsScreen(navController)

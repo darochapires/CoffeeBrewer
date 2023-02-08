@@ -5,7 +5,7 @@ import com.rochapires.coffeebrewer.features.feature_recipe.domain.repository.Use
 class GetDefaultRecipeUseCase(
     private val repository: UserPreferencesRepository
 ) {
-    suspend operator fun invoke()  {
-        repository.getDefaultRecipe()
+    suspend operator fun invoke(): Int?  {
+        return repository.getDefaultRecipe()
     }
 }
