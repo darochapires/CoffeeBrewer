@@ -2,18 +2,22 @@ package com.rochapires.coffeebrewer.features.feature_home.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -45,12 +49,21 @@ fun BottomBarScaffold(navController:NavHostController = rememberNavController())
                     )
                 ),
                 onItemClick = { item ->
-                    navController.navigate(item.route)
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
         }
-    ) {
-        HomeNavigation(navController = navController)
+    ) { innerPadding ->
+        HomeNavigation(
+            navController = navController,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }
 
@@ -61,12 +74,13 @@ fun BottomNavigationBar(
     modifier: Modifier = Modifier,
     onItemClick: (BottomNavItem) -> Unit
 ) {
-    val backStackEntry = navController.currentBackStackEntryAsState()
+    val backStackEntry by navController.currentBackStackEntryAsState()
 
-    val shouldShowBottomBar = items.any { item ->
+    /*val shouldShowBottomBar = items.any { item ->
         item.route == backStackEntry.value?.destination?.route
     }
-    if(!shouldShowBottomBar) return
+    if(!shouldShowBottomBar) return*/
+
 
     BottomNavigation(
         modifier = modifier,
@@ -74,13 +88,13 @@ fun BottomNavigationBar(
         elevation = 5.dp
     ) {
         items.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
+            val selected = backStackEntry?.destination?.hierarchy?.any { it.route == item.route} == true
             BottomNavigationItem(
                 selected = selected,
                 onClick = {
-                    if(!selected) {
+                    //if(!selected) {
                         onItemClick(item)
-                    }
+                    //}
                 },
                 selectedContentColor = Color.White,
                 unselectedContentColor = Color.Gray,

@@ -3,10 +3,10 @@ Content-Type: application/json
 
 {
     "order": 1,
-    "stepType": 1,
+    "stepType": 5,
     "title": "Bloom",
-    "description": "Pour 26 g of water slowly in a circular motion",
+    "description": "Pour 40 g of water slowly in a circular motion",
     "durationInSeconds": 7,
-    "recipeId": 1,
+    "recipeId": 2,
     "waterAmount": 40
 }

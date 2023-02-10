@@ -3,5 +3,6 @@ package com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipe_
 sealed class RecipeDetailEvent {
     object StartRecipePressed: RecipeDetailEvent()
     object StepFinished: RecipeDetailEvent()
-    data class SetAsDefaultPressed(val recipeId: Int): RecipeDetailEvent()
+    object SetAsDefaultPressed: RecipeDetailEvent()
+    object LikePressed: RecipeDetailEvent()
 }

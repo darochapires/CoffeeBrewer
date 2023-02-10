@@ -1,6 +1,7 @@
 package com.rochapires.coffeebrewer.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,13 +14,17 @@ import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipes.
 import com.rochapires.coffeebrewer.features.feature_settings.presentation.SettingsScreen
 
 @Composable
-fun HomeNavigation(navController: NavHostController) {
+fun HomeNavigation(
+    navController: NavHostController,
+    modifier: Modifier
+) {
     NavHost(
         navController = navController,
-        startDestination = Screen.HomeScreen.route
+        startDestination = Screen.HomeScreen.route,
+        modifier = modifier
     ) {
         composable(route = Screen.HomeScreen.route) {
-            HomeScreen(navController)
+            HomeScreen()
         }
         composable(route = Screen.MethodsScreen.route) {
             MethodsScreen(navController)

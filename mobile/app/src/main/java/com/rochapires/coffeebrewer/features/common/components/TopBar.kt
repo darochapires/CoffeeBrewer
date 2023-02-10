@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyListState
@@ -25,7 +26,8 @@ fun TopBar(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState? = null,
     title: String = "",
-    navController: NavController
+    actions: @Composable RowScope.() -> Unit = { },
+    navController: NavController?
 ) {
     TopAppBar(
         title = {
@@ -41,18 +43,23 @@ fun TopBar(
             .background(color = MaterialTheme.colors.primary)
             .animateContentSize(animationSpec = tween(durationMillis = TOP_BAR_ANIMATION_DURATION))
             .height(height = if (lazyListState != null && !lazyListState.isScrollingUp()) 0.dp else TOP_BAR_HEIGHT),
-        navigationIcon = if (navController.previousBackStackEntry != null) {
-            {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Back"
-                    )
+        navigationIcon = navController?.let { navigationController ->
+            if (navigationController.previousBackStackEntry != null) {
+                {
+                    IconButton(
+                        onClick = { navigationController.navigateUp() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
                 }
+            } else {
+                null
             }
-        } else {
-            null
-        }
+        },
+        actions = actions
     )
 }
 

@@ -24,12 +24,21 @@ class RecipeDetailViewModel @Inject constructor(
     val state: State<RecipeDetailState> = _state
 
     init {
-        savedStateHandle.get<String>(Constants.RECIPE_ID_KEY)?.let { recipeIdString ->
-            val recipeId = recipeIdString.toInt()
-            //TODO wait for both calls
-            getRecipe(recipeId)
-            getSteps(recipeId)
+        var recipeId: Int = -1
+        val recipeIdString = savedStateHandle.get<String>(Constants.RECIPE_ID_KEY)
+        if(recipeIdString.isNullOrBlank()) {
+            viewModelScope.launch {
+                recipesUseCase.getDefaultRecipeUseCase()?.let {
+                    recipeId = recipesUseCase.getDefaultRecipeUseCase()!!
+                }
+            }
+        } else {
+            recipeId = recipeIdString.toInt()
         }
+
+        //TODO wait for both calls
+        getRecipe(recipeId)
+        getSteps(recipeId)
     }
 
     private fun getRecipe(recipeId: Int) {
@@ -90,11 +99,13 @@ class RecipeDetailViewModel @Inject constructor(
                     //brew finished
                     //TODO brew finished
                     _state.value = _state.value.copy(
-                        brewTimerIsRunning = false
+                        brewTimerIsRunning = false,
+                        brewTimerIsVisible = false,
+                        currentStepIndex = null
                     )
                     return
                 }
-                val currentStepIndex = _state.value.currentStepIndex + 1
+                val currentStepIndex = if(_state.value.currentStepIndex != null) _state.value.currentStepIndex!! + 1 else 0
                 val step = _state.value.steps[currentStepIndex]
                 _state.value = _state.value.copy(
                     brewTimerTotalTime = step.durationInSeconds,
@@ -103,7 +114,12 @@ class RecipeDetailViewModel @Inject constructor(
             }
             is RecipeDetailEvent.SetAsDefaultPressed -> {
                 viewModelScope.launch {
-                    recipesUseCase.saveDefaultRecipeUseCase(event.recipeId)
+                    state.value.recipe?.let { recipesUseCase.saveDefaultRecipeUseCase(it.id) }
+                }
+            }
+            is RecipeDetailEvent.LikePressed -> {
+                viewModelScope.launch {
+                    //TODO
                 }
             }
         }

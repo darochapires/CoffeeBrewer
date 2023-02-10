@@ -9,6 +9,7 @@ data class RecipeDetailState (
     val recipe: Recipe? = null,
     val steps: List<Step> = emptyList(),
     val brewTimerIsVisible: Boolean = false,
+    val shouldShowTopBar: Boolean = true,
 
     //timer
     val brewTimerIsRunning: Boolean = false,
@@ -17,5 +18,5 @@ data class RecipeDetailState (
      * time in seconds
      */
     val brewTimerTotalTime: Long = 0L,
-    val currentStepIndex: Int = -1
+    val currentStepIndex: Int? = null
 )

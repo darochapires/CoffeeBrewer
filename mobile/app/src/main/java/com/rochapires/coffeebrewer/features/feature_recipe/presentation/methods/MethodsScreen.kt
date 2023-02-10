@@ -33,7 +33,6 @@ fun MethodsScreen(
                     method = method,
                     selected = isLanding && viewModel.defaultMethodId != null  && viewModel.defaultMethodId == method.id,
                     onItemClick = {
-                        //viewModel.onEvent(MethodsEvent.ItemSelected(method, isLanding))
                         navController.navigate(Screen.RecipesScreen.route + "/${method.id}/${method.name}")
                     }
                 )

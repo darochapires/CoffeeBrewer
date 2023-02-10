@@ -1,9 +1,9 @@
 package com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipe_detail
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,11 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -36,37 +40,42 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun RecipeDetailScreen(
-    navController: NavController,
+    navController: NavController? = null,
     viewModel: RecipeDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
     val lazyListState = rememberLazyListState()
     val scaffoldState = rememberScaffoldState()
     val composableScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopBar(
                 lazyListState = lazyListState,
-                title = if(state.recipe != null) state.recipe.name else "",
-                navController = navController
+                title = if (state.recipe != null) state.recipe.name else "",
+                navController = navController,
+                actions = { TopBarActions(viewModel) }
             )
-
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    viewModel.onEvent(RecipeDetailEvent.StartRecipePressed)
-                    composableScope.launch {
-                        lazyListState.scrollToItem(
-                            index = viewModel.state.value.currentStepIndex,
-                            scrollOffset = 0
-                        )
-                    }
-                },
-                backgroundColor = MaterialTheme.colors.primary
-            ) {
-                Icon(imageVector = Icons.Default.PlayArrow, contentDescription = "Start recipe")
+            state.recipe?.let {
+                FloatingActionButton(
+                    onClick = {
+                        viewModel.onEvent(RecipeDetailEvent.StartRecipePressed)
+                        composableScope.launch {
+                            viewModel.state.value.currentStepIndex?.let { index ->
+                                lazyListState.scrollToItem(
+                                    index = index,
+                                    scrollOffset = 0
+                                )
+                            }
+                        }
+                    },
+                    backgroundColor = MaterialTheme.colors.primary
+                ) {
+                    Icon(imageVector = Icons.Default.PlayArrow, contentDescription = "Start recipe")
+                }
             }
         },
         scaffoldState = scaffoldState
@@ -79,13 +88,24 @@ fun RecipeDetailScreen(
                 ) {
                     BrewTimer(
                         totalTime = viewModel.state.value.brewTimerTotalTime * 1000L,
+                        brewTimerIsRunning = viewModel.state.value.brewTimerIsRunning,
                         stepFinished = {
                             viewModel.onEvent(RecipeDetailEvent.StepFinished)
-                            composableScope.launch {
-                                lazyListState.scrollToItem(
-                                    index = viewModel.state.value.currentStepIndex,
-                                    scrollOffset = 0
-                                )
+                            if(viewModel.state.value.brewTimerIsRunning) {
+                                composableScope.launch {
+                                    viewModel.state.value.currentStepIndex?.let { index ->
+                                        lazyListState.scrollToItem(
+                                            index = index,
+                                            scrollOffset = 0
+                                        )
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Brew finished. Enjoy you cup! \nIf necessary, adjust grind size",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         }
                     )
@@ -143,6 +163,7 @@ fun RecipeDetailScreen(
 @Composable
 fun BrewTimer(
     totalTime: Long,
+    brewTimerIsRunning: Boolean = false,
     stepFinished: () -> Unit,
     remainingTimeColor: Color = MaterialTheme.colors.primary,
     passedTimeColor: Color = Color.DarkGray,
@@ -153,17 +174,24 @@ fun BrewTimer(
     var value by remember { mutableStateOf(1f) }
     var currentTime by remember { mutableStateOf(totalTime) }
     var currentTimeCircle by remember { mutableStateOf(totalTime) }
-    var isTimerRunning by remember { mutableStateOf(false) }
+    var isTimerRunning by remember { mutableStateOf(brewTimerIsRunning) }
     var delayAggregate by remember { mutableStateOf(0L) }
     var isNewStep by remember { mutableStateOf(false) }
 
     if(isNewStep) {
-        currentTime = totalTime
-        currentTimeCircle = totalTime
         isNewStep = false
+        isTimerRunning = brewTimerIsRunning
+        if(isTimerRunning) {
+            currentTime = totalTime
+            currentTimeCircle = totalTime
+        }
     }
 
-    LaunchedEffect(key1 = currentTimeCircle) {
+    LaunchedEffect(key1 = currentTimeCircle, key2 = isTimerRunning) {
+        if(!isTimerRunning) {
+            return@LaunchedEffect
+        }
+
         if (currentTimeCircle > 0L) {
             delay(100L)
             currentTimeCircle -= 100L
@@ -210,6 +238,52 @@ fun BrewTimer(
         )
     }
 
+}
+
+@Composable
+fun TopBarActions(viewModel: RecipeDetailViewModel) {
+    SetDefaultRecipe(
+        onClick = {
+            viewModel.onEvent(RecipeDetailEvent.SetAsDefaultPressed)
+        }
+    )
+    LikeRecipe(
+        onClick = {
+            viewModel.onEvent(RecipeDetailEvent.LikePressed)
+        }
+    )
+}
+
+@Composable
+fun SetDefaultRecipe(
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = {
+            onClick()
+        }
+    ) {
+        Icon(
+            imageVector = Icons.Default.Star,
+            contentDescription = "Set Default"
+        )
+    }
+}
+
+@Composable
+fun LikeRecipe(
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = {
+            onClick()
+        }
+    ) {
+        Icon(
+            imageVector = Icons.Default.ThumbUp,
+            contentDescription = "Like"
+        )
+    }
 }
 
 /*
