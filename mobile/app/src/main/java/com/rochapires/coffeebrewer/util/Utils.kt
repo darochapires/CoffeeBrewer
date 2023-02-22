@@ -16,4 +16,8 @@ object Utils {
             DateUtils.formatElapsedTime(this)
         }
     }
+
+    fun Double.formatWeight(): String {
+        return "${this}g"
+    }
 }

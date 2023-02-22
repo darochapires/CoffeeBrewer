@@ -2,11 +2,10 @@ POST https://coffeebrewer.azurewebsites.net/steps
 Content-Type: application/json
 
 {
-    "order": 1,
-    "stepType": 5,
-    "title": "Bloom",
-    "description": "Pour 40 g of water slowly in a circular motion",
-    "durationInSeconds": 7,
-    "recipeId": 2,
-    "waterAmount": 40
+    "order": 2,
+    "stepType": 2,
+    "title": "Wait",
+    "description": "Let it bloom",
+    "durationInSeconds": 3,
+    "recipeId": 3
 }

@@ -12,7 +12,7 @@ data class Recipe(
     val coffee_amount: Double,
     val water_amount: Double,
     val water_temperature: Double,
-    val time: Int,
+    val time: Long,
     val grind_size: String,
     val timestamp: Long,
     val methodId: Int

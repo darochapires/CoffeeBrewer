@@ -2,20 +2,17 @@ package com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipe_
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -24,6 +21,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -31,8 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.rochapires.coffeebrewer.features.common.components.TopBar
+import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Recipe
 import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipe_detail.components.StepItem
-import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipes.components.RecipeItem
+import com.rochapires.coffeebrewer.features.feature_recipe.presentation.recipes.components.RecipeAmounts
 import com.rochapires.coffeebrewer.util.Utils.formatDuration
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -87,6 +87,7 @@ fun RecipeDetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     BrewTimer(
+                        modifier = Modifier.size(200.dp),
                         totalTime = viewModel.state.value.brewTimerTotalTime * 1000L,
                         brewTimerIsRunning = viewModel.state.value.brewTimerIsRunning,
                         stepFinished = {
@@ -119,11 +120,12 @@ fun RecipeDetailScreen(
             ) {
                 if (!state.brewTimerIsVisible) {
                     item {
-                        if (state.recipe != null) {
-                            RecipeItem(
+                        state.recipe?.let { recipe ->
+                            RecipeInfo(recipe = recipe)
+                            /*RecipeItem(
                                 recipe = state.recipe,
                                 cardBackgroundColor = Color.Transparent
-                            )
+                            )*/
                         }
                     }
                 }
@@ -162,12 +164,12 @@ fun RecipeDetailScreen(
 
 @Composable
 fun BrewTimer(
+    modifier: Modifier,
     totalTime: Long,
     brewTimerIsRunning: Boolean = false,
     stepFinished: () -> Unit,
     remainingTimeColor: Color = MaterialTheme.colors.primary,
     passedTimeColor: Color = Color.DarkGray,
-    modifier: Modifier = Modifier.size(200.dp),
     strokeWidth: Dp = 5.dp
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
@@ -284,6 +286,79 @@ fun LikeRecipe(
             contentDescription = "Like"
         )
     }
+}
+
+@Composable
+fun RecipeInfo(
+    recipe: Recipe,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 15.dp, bottom =  5.dp, start = 5.dp, end = 5.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    modifier = Modifier.weight(6f),
+                    text = recipe.name,
+                    fontSize = MaterialTheme.typography.h6.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Divider(modifier = Modifier.padding(vertical = 10.dp))
+            RecipeAmounts(recipe)
+            Divider(modifier = Modifier.padding(vertical = 10.dp))
+            Text(
+                modifier = Modifier.padding(vertical = 10.dp),
+                text = recipe.description,
+                fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                fontWeight = FontWeight.Normal
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun RecipeInfoPreview() {
+    RecipeInfo(recipe = Recipe(
+        1,
+        "Rao's V60",
+        "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description Rao's V60 description Rao's V60 description Rao's V60 " +
+                "description Rao's V60 description Rao's V60 description Rao's V60 description " +
+                "Rao's V60 description",
+        15.0,
+        250.0,
+        94.0,
+        180,
+        "Medium Fine",
+        432435,
+        1
+    ))
 }
 
 /*

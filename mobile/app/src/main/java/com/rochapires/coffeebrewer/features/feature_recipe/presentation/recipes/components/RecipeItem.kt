@@ -23,7 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.rochapires.coffeebrewer.R
 import com.rochapires.coffeebrewer.features.feature_recipe.domain.model.Recipe
+import com.rochapires.coffeebrewer.util.Utils.formatDuration
+import com.rochapires.coffeebrewer.util.Utils.formatWeight
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -77,29 +80,7 @@ fun RecipeItem(
                 }
             }
             Divider(modifier = Modifier.padding(vertical = 10.dp))
-            Row(
-                modifier = Modifier.padding(vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BottomRecipeItemInfo(
-                    modifier = Modifier.weight(3f),
-                    icon = Icons.Default.Star,
-                    iconContentDescription = "Coffee Amount",
-                    text = "15g"
-                )
-                BottomRecipeItemInfo(
-                    modifier = Modifier.weight(3f),
-                    icon = Icons.Default.AccountCircle,
-                    iconContentDescription = "Water Amount",
-                    text = "250ml"
-                )
-                BottomRecipeItemInfo(
-                    modifier = Modifier.weight(3f),
-                    icon = Icons.Default.List,
-                    iconContentDescription = "Time",
-                    text = "3:20"
-                )
-            }
+            RecipeAmounts(recipe)
             if(expandedState) {
                 Divider(modifier = Modifier.padding(vertical = 10.dp))
                 Text(
@@ -114,6 +95,37 @@ fun RecipeItem(
 }
 
 @Composable
+fun RecipeAmounts(
+    recipe: Recipe,
+    onCoffeeAmountClick: () -> Unit = {},
+    onWaterAmountClick: () -> Unit = {}
+) {
+    Row(
+        modifier = Modifier.padding(vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BottomRecipeItemInfo(
+            modifier = Modifier.weight(3f),
+            icon = Icons.Default.Star,
+            iconContentDescription = "Coffee Amount",
+            text = recipe.coffee_amount.formatWeight()
+        )
+        BottomRecipeItemInfo(
+            modifier = Modifier.weight(3f),
+            icon = Icons.Default.AccountCircle,
+            iconContentDescription = "Water Amount",
+            text = recipe.water_amount.formatWeight()
+        )
+        BottomRecipeItemInfo(
+            modifier = Modifier.weight(3f),
+            icon = Icons.Default.List,
+            iconContentDescription = "Time",
+            text = recipe.time.formatDuration()
+        )
+    }
+}
+
+@Composable
 fun BottomRecipeItemInfo(
     modifier: Modifier = Modifier,
     icon: ImageVector,
@@ -123,7 +135,8 @@ fun BottomRecipeItemInfo(
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+
     ) {
         Icon(imageVector = icon, contentDescription = iconContentDescription)
         Spacer(modifier = Modifier.width(7.dp))
@@ -141,6 +154,16 @@ fun BottomRecipeItemInfo(
 @Preview
 @Composable
 fun RecipeItemPreview(){
-    RecipeItem(recipe = Recipe(1,"Hoffmann's V60","Hoffmann's V60 description Hoffmann's V60 description Hoffmann's V60 description Hoffmann's V60 description Hoffmann's V60 description",
-        2.0, 2.0, 2.0, 180,"",231, 1), onItemClick = {})
+    RecipeItem(recipe = Recipe(
+        1,
+        "Hoffmann's V60",
+        "Hoffmann's V60 description Hoffmann's V60 description Hoffmann's V60 description Hoffmann's V60 description Hoffmann's V60 description",
+        2.0,
+        2.0,
+        2.0,
+        180,
+        "",
+        231,
+        1
+    ), onItemClick = {})
 }
